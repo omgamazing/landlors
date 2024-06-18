@@ -1,5 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "cardNode.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,19 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.load(url);
+
+    /* //测试description
+    CardNode node;
+    node.setCards({1, 14, 27, 40, 53, 54});
+    std::cout << node.description() << std::endl;
+
+    //测试getpower
+    float power = node.getPower();
+    if (power == expectedPower)
+        std::cout << "passed" << std::endl;
+    else
+        std::cout << "failded" << std::endl;
+    std::cout << "power:" << power << std::endl;*/
 
     return app.exec();
 }
