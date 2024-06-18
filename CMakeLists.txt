@@ -16,6 +16,8 @@ qt_add_qml_module(applandlors
     QML_FILES
         Main.qml
     SOURCES
+    SOURCES cardNode.h
+    SOURCES cardNode.cpp
 )
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
