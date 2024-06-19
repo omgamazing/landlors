@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "cardWeight.h"
+#include "game.h"
 #include <iostream>
 int main(int argc, char *argv[])
 {
@@ -16,7 +16,9 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-    CardNode cardNode(TripleWithOne, 3, 4);
-    std::cout << cardNode.type << " " << cardNode.count;
+    //game try
+    Game game;
+    game.startGame();
+
     return app.exec();
 }

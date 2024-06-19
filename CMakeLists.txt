@@ -22,13 +22,14 @@ qt_add_qml_module(
   QML_FILES
   Actions.qml
   SOURCES
-  cardWeight.h
-  cardWeight.cpp
   RESOURCES
   resources.qrc
-  cardType.h
-  cardType.cpp)
-
+  SOURCES
+  SOURCES
+  SOURCES
+  QML_FILES
+  SOURCES game.cpp
+  SOURCES game.h)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 
