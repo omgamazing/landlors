@@ -1,5 +1,5 @@
 #pragma once
-#include "cardType.h"
+#include "card.h"
 #include <cassert>
 #include <iostream>
 #include <sstream>
