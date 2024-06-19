@@ -23,7 +23,7 @@ enum CardTypes {
 // 定义牌型结构体
 struct CardNode
 {
-    CardType type; // 牌型
+    //CardType type; // 牌型
     int value;     // 牌型中关键牌的值
     int count;     // 牌型中牌的数量
 };
