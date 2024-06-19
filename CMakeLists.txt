@@ -22,8 +22,8 @@ qt_add_qml_module(
   QML_FILES
   Actions.qml
   SOURCES
-  cardNode.h
-  cardNode.cpp
+  cardWeight.h
+  cardWeight.cpp
   RESOURCES
   resources.qrc
   cardType.h

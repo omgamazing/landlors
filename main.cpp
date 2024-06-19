@@ -1,7 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "cardNode.h"
-
+#include "cardWeight.h"
+#include <iostream>
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -16,15 +16,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-    //测试description
-    //CardNode node;
-    //node.setCards({1, 14});
-    // std::cout << node.description() << std::endl;
-
-    //测试getpower
-    //float power = node.getPower();
-    //std::cout << "failded" << std::endl;
-    //std::cout << "power:" << power << std::endl;
-
+    CardNode cardNode(TripleWithOne, 3, 4);
+    std::cout << cardNode.type << " " << cardNode.count;
     return app.exec();
 }
