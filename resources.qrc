@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file>images/people-1.png</file>
+        <file>images/people-2.png</file>
+        <file>images/people-3.png</file>
         <file>images/start-1.png</file>
         <file>images/start-2.png</file>
         <file>images/start-3.png</file>
@@ -59,5 +62,6 @@
         <file>poker/5-1.png</file>
         <file>poker/5-2.png</file>
         <file>poker/rear.png</file>
+        <file>Card.qml</file>
     </qresource>
 </RCC>
