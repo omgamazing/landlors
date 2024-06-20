@@ -124,8 +124,6 @@ ApplicationWindow {
 
 
 
-
-
     property int count_me:0
     property int count_left:0
     property int count_right:0
@@ -145,7 +143,6 @@ ApplicationWindow {
             Text{text:"    我\t"+count_me+"分";font.pointSize: 16;color:"white"}
             Text{text:"左侧机器人 "+count_left+"分";font.pointSize: 16;color:"white"}
             Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
-
     }
 
 
@@ -155,4 +152,23 @@ ApplicationWindow {
 
 
 
+
+
+    /*Component.onCompleted: {
+      var cards:[];
+            console.log("Start");
+            // 添加牌到牌组中，可以根据需要自定义牌的花色和牌面
+            cards.push({ suit: 1, rank: 1 }); // 黑桃 A
+            cards.push({ suit: 2, rank: 2 }); // 红桃 2
+            cards.push({ suit: 3, rank: 3 }); // 梅花 3
+            cards.push({ suit: 5, rank: 14 }); // 小王
+            cards.push({ suit: 5, rank: 15 }); // 大王
+
+
+            // 打印所有牌的信息
+            console.log("所有牌的信息:");
+            for (var i = 0; i < cards.length; i++) {
+                console.log("花色:", cards[i].suit, " 牌面:", cards[i].rank);
+            }
+        }*/
 }
