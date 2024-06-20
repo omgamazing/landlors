@@ -19,12 +19,12 @@ qt_add_qml_module(
   1.0
   QML_FILES
   Window.qml
+  Images.qml
+  Card.qmll
+  CardType.qml
   SOURCES
   RESOURCES
-  resources.qrc
-  QML_FILES
-  Card.qml
-  CardType.qml)
+  resources.qrc)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 

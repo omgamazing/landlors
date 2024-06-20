@@ -1,9 +1,15 @@
-import "./Card.qml"
+//单张牌的自定义组件，用于显示每张扑克牌，同时绑定牌的花色和大小
+
 import QtQuick
+import QtQuick.Controls
+import "./Card.qml"
+
+
 Item {
 
     property int suit // 花色
     property int rank // 牌面
+
 
 
     //测试比较牌面的大小
@@ -20,7 +26,9 @@ Item {
                 for (var i = 0; i < cards.length; i++) {
                     console.log("花色:", cards[i].suit, " 牌面:", cards[i].rank);
                 }
+
     }
+
 
 
     // 显示牌的外观，使用图片
@@ -76,7 +84,8 @@ Item {
                 }
 
         // 返回图片路径
-        return "qrc:/poker//" + suitName + "-" + rankName + ".png";
+
+        return "qrc:/poker/" + suitName + "-" + rankName + ".png";
     }
 
 //获取牌的类型

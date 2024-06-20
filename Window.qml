@@ -26,67 +26,69 @@ ApplicationWindow {
     property alias rplayer:_rplayer
     property alias me:_me
 
+    //游戏背景
+    background: Image {
+        id:_back
+        source: "qrc:/images/background-2.png" //URL路径
+        fillMode: Image.PreserveAspectCrop
+        anchors.fill: parent
+    }
+
     //左边玩家
     Image{
         id:_lplayer
-
+        visible:false
         source:"qrc:/images/people-1.png"
         width:100
         height:140
         anchors.left: window.left
         y:(parent.height-height)/2.3
-
-
-
     }
+
+    //右边玩家
     Image{
         id:_rplayer
-
-        source:"qrc:/images/people-1.png"
+        visible:false
+        source:"qrc:/images/people-3.png"
         width:100
         height:140
-        mirror: true // 水平镜像翻转
+        //mirror: true // 水平镜像翻转
         anchors.right: parent.right
         y:(parent.height-height)/2.3
-
-
 
     }
 
     //自己
     Image{
         id:_me
-        source:"qrc:/images/people-1.png"
+        visible:false
+        source:"qrc:/images/people-3.png"
+        mirror: true // 水平镜像翻转
         width:100
         height:140
         x:100
         y:450
 
-
     }
-
 
     //中间卡牌
     Image{
         id:_centercard
         source: "qrc:/poker/rear.png"
         anchors.centerIn: parent
-
-
-
     }
 
     //左右卡牌
     Image{
         id:_lcard
+        visible:false
         source: "qrc:/poker/rear.png"
         anchors.verticalCenter:parent.verticalCenter
         anchors.left: lplayer.right
-
-
     }
     Image{
         id:_rcard
+        visible:false
         source: "qrc:/poker/rear.png"
         anchors.verticalCenter:parent.verticalCenter
         anchors.right: rplayer.left
@@ -121,15 +123,8 @@ ApplicationWindow {
         }
     }
 
-    //游戏背景
-    background: Image {
-        id:_back
-        source: "qrc:/images/background-2.png" //URL路径
-        fillMode: Image.PreserveAspectCrop
-        anchors.fill: parent
-    }
 
-<<<<<<< HEAD
+
 
 
 
@@ -137,7 +132,6 @@ ApplicationWindow {
     property int count_me:0
     property int count_left:0
     property int count_right:0
-
 
     //分数显示栏
     ColumnLayout{
@@ -205,6 +199,7 @@ ApplicationWindow {
                 notcall.visible = false; // 定时器触发后隐藏图片按钮
             }
         }
+
 
 
             // 打印所有牌的信息
