@@ -63,6 +63,20 @@
         <file>poker/5-2.png</file>
         <file>poker/rear.png</file>
         <file>Card.qml</file>
-        <file>CardType.qml</file>
+        <file>images/buqiang.png</file>
+        <file>Player.qml</file>
+        <file>images/jiaodizhu.png</file>
+        <file>images/bujiao1.png</file>
+        <file>images/bujiao2.png</file>
+        <file>images/buyao1.png</file>
+        <file>images/buyao2.png</file>
+        <file>images/buyao3.png</file>
+        <file>images/chupai1.png</file>
+        <file>images/chupai2.png</file>
+        <file>images/chupai3.png</file>
+        <file>images/jiaodizhu1.png</file>
+        <file>images/jiaodizhu2.png</file>
+        <file>images/clock.png</file>
+        <file>images/number.png</file>
     </qresource>
 </RCC>
