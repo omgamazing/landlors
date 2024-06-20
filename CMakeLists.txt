@@ -19,9 +19,10 @@ qt_add_qml_module(
   1.0
   QML_FILES
   Window.qml
-  Images.qml
-  Card.qmll
+  Card.qml
   CardType.qml
+  Player.qml
+  Deck.qml
   SOURCES
   RESOURCES
   resources.qrc)
