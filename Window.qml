@@ -51,6 +51,8 @@ ApplicationWindow {
             Text{text:"左侧机器人 "+count_left+"分";font.pointSize: 16;color:"white"}
             Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
     }
-Card{}
+
+
+
 
 }
