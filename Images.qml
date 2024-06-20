@@ -3,9 +3,6 @@ import QtQuick
 Item {
 
     property alias startButton:_startButton
-
-
-
     property alias centercard:_centercard
     property alias lcard:_lcard
     property alias rcard:_rcard

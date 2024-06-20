@@ -63,5 +63,6 @@
         <file>poker/5-2.png</file>
         <file>poker/rear.png</file>
         <file>Card.qml</file>
+        <file>Deck.qml</file>
     </qresource>
 </RCC>

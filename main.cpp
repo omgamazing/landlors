@@ -1,6 +1,5 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "game.h"
 #include <iostream>
 int main(int argc, char *argv[])
 {
@@ -15,10 +14,6 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.load(url);
-
-    //game try
-    Game game;
-    game.startGame();
 
     return app.exec();
 }
