@@ -1,3 +1,5 @@
+//牌类型的定义，或许类型大小的比较可以写里面(当然只是参考)
+
 import QtQuick
 
 QtObject {

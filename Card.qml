@@ -1,3 +1,5 @@
+//定义牌的花色与大小，与图片进行绑定
+
 import QtQuick
 Item {
 

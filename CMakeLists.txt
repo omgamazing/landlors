@@ -19,10 +19,15 @@ qt_add_qml_module(
   1.0
   QML_FILES
   Window.qml
+  Actions.qml
+  Content.qml
+  Dialogs.qml
   Card.qml
   CardType.qml
   Player.qml
   Deck.qml
+  Handcard.qml
+  game.js
   SOURCES
   RESOURCES
   resources.qrc)

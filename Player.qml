@@ -1,3 +1,6 @@
+//需要修改的地方：可以考虑将控件加入另一个qml中，也可以先放到window,后续再分离
+//此qml实现：定义玩家状态：是否为地主、是否轮到玩家出牌、是否能出牌(轮到玩家出牌后，出不出得起)
+
 import QtQuick
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
