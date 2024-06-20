@@ -17,6 +17,8 @@ ApplicationWindow {
 
     property alias back:_back
     property alias startButton:_startButton
+    property alias notcallButton:_notcallButton
+    property alias notcall:_notcall
     property alias centercard:_centercard
     property alias lcard:_lcard
     property alias rcard:_rcard
@@ -109,6 +111,7 @@ ApplicationWindow {
             onEntered: {startButton.source="qrc:/images/start-2.png"}
             onClicked:{
                 startButton.visible=false
+                notcallButton.visible=!notcallButton.visible
             }
            // 鼠标离开时触发的信号处理函数
             onExited: {startButton.source="qrc:/images/start-1.png"}
@@ -128,9 +131,7 @@ ApplicationWindow {
     }
 
 
-    Images{
-        id:iamges
-    }
+
 
     property int count_me:0
     property int count_left:0
@@ -156,18 +157,54 @@ ApplicationWindow {
 
     }
 
-    Item{
-        width:100
-        height:150
 
-        Card{
-          anchors.fill:parent
-          suit:1
-          rank:10
+    Image{
+        visible:false
+        id:_notcallButton
+        source: "qrc:/images/buqiang-1.png"
+        anchors.right: startButton.left
+        anchors.top:centercard.bottom
+        anchors.topMargin:100
+        // 添加动画
+        MouseArea{
+            anchors.fill: parent
+            hoverEnabled: true // 启用鼠标悬停事件
+
+            //鼠标悬停于不抢按钮
+            onEntered: {notcallButton.source="qrc:/images/buqiang-2.png"}
+            onClicked:{
+                notcallButton.visible=false
+                notcall.visible=!notcall.visible
+                //设置不抢消失
+                if (notcall.visible) {
+                                   hideTimer.start();
+                               } else {
+                                   hideTimer.stop();
+                               }
+            }
+           // 鼠标离开时触发的信号处理函数
+            onExited: {notcallButton.source="qrc:/images/buqiang-1.png"}
+
+            cursorShape: Qt.PointingHandCursor // 鼠标悬停时显示手形光标
+
         }
-        visible: true
     }
-
-
+    Image{
+        visible:false
+        id:_notcall
+        source: "qrc:/images/buqiang.png"
+        anchors.top:centercard.bottom
+        anchors.topMargin:10
+        anchors.horizontalCenter: centercard.horizontalCenter
+    }
+    //不抢消失定时器
+    Timer {
+            id: hideTimer
+            interval: 1000 // 1秒后触发
+            repeat: false // 只触发一次
+            onTriggered: {
+                notcall.visible = false; // 定时器触发后隐藏图片按钮
+            }
+        }
 
 }
