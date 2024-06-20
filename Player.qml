@@ -1,18 +1,27 @@
 import QtQuick
-
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
 Item {
 
     property alias rplayer:_rplayer
     property alias me:_me
     property alias lplayer:_lplayer
     property alias notcallButton:_notcallButton
+    property alias notcallButtonImage:_notcallButtonImage
     property alias notcall:_notcall
     property alias mecall:_mecall
     property alias startButton:_startButton
+    property alias startButtonImage:_startButtonImage
     property alias centercard:_centercard
     property alias lcard:_lcard
     property alias rcard:_rcard
     property alias callButton:_callButton
+    property alias callButtonImage:_callButtonImage
+    property alias clockImage:_clockImage
+    property int countdownSeconds: 30
+    property int currentSecond: countdownSeconds
+    property int digitWidth: 40  // 假设每个数字的宽度是40
+    property int digitHeight: 42 // 假设每个数字的高度是42
     //中间卡牌
     Image{
         id:_centercard
@@ -38,35 +47,46 @@ Item {
     }
 
     //开始按钮
-    Image{
-        visible:true
-        id:_startButton
-        source: "qrc:/images/start-1.png"
-        anchors.top:centercard.bottom
-        anchors.topMargin:100
-        anchors.horizontalCenter: centercard.horizontalCenter
+     ColumnLayout {
+         anchors.top: centercard.bottom
+         anchors.topMargin: 100
+         anchors.horizontalCenter: centercard.horizontalCenter
+    Button {
+        id: _startButton
+        visible: true
+        background: Rectangle {
+               Image {
+                   id: _startButtonImage
+                   source: "qrc:/images/start-1.png"
+                   fillMode: Image.PreserveAspectFit
+                   anchors.centerIn: parent
+               }
+           }
+        onClicked: {
+            startButton.visible = false;
+            notcallButton.visible = !notcallButton.visible;
+            callButton.visible = !callButton.visible;
+            console.log("player starts game");
+            displayclockTimer.start();
+        }
 
-        // 添加动画
-        MouseArea{
-            anchors.fill: parent
-            hoverEnabled: true // 启用鼠标悬停事件
+        HoverHandler {
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+            cursorShape: Qt.PointingHandCursor
 
-            //鼠标悬停于开始按钮
-            onEntered: {startButton.source="qrc:/images/start-2.png"}
-            onClicked:{
-                startButton.visible=false
-                notcallButton.visible=!notcallButton.visible
-                callButton.visible=!callButton.visible
+            onHoveredChanged: {
+                if (hovered) {
+                    startButtonImage.source = "qrc:/images/start-2.png"; // 悬停时的图片路径
+                } else {
+                    startButtonImage.source = "qrc:/images/start-1.png"; // 恢复默认图片
+                }
             }
-           // 鼠标离开时触发的信号处理函数
-            onExited: {startButton.source="qrc:/images/start-1.png"}
-
-            cursorShape: Qt.PointingHandCursor // 鼠标悬停时显示手形光标
-
         }
     }
+}
 
-    //左边玩家
+
+       //左边玩家
     Image{
         id:_lplayer
         visible:true
@@ -127,38 +147,84 @@ Item {
     }
     //玩家不叫地主
 
-    Image{
+     RowLayout {
+         x:395
+         y: 470
+          spacing: 200
+         Button{
         visible:false
         id:_notcallButton
-        source: "qrc:/images/bujiao1.png"
-        anchors.right: startButton.left
-        anchors.top:centercard.bottom
-        anchors.topMargin:70
-        // 添加动画
-        MouseArea{
-            anchors.fill: parent
-            hoverEnabled: true // 启用鼠标悬停事件
-
-            //鼠标悬停于不抢按钮
-            onEntered: {notcallButton.source="qrc:/images/bujiao2.png"}
+        background: Rectangle {
+               Image {
+                   id: _notcallButtonImage
+                   source: "qrc:/images/bujiao1.png"
+                   fillMode: Image.PreserveAspectFit
+                   anchors.centerIn: parent
+               }
+           }
             onClicked:{
                 notcallButton.visible=false
                 _callButton.visible=false
                 notcall.visible=!notcall.visible
+                console.log("player notcall")
                 //设置不抢和农民形象消失，地主形象出现
-
                 if (notcall.visible) {
                                    hideTimer.start();
                                } else {
                                    hideTimer.stop();
             }
         }
-             // 鼠标离开时触发的信号处理函数
-            onExited:{notcallButton.source="qrc:/images/bujiao1.png"}
+            HoverHandler{
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                cursorShape: Qt.PointingHandCursor
+                onHoveredChanged: {
+                            if (hovered) {
+                                _notcallButtonImage.source="qrc:/images/bujiao2.png"; // 悬停时的图片路径
+                            } else {
+                                 _notcallButtonImage.source="qrc:/images/bujiao1.png"; // 恢复默认图片
+                            }
+                        }
+            }
+    }
+             //玩家叫地主
+         Button{
+           visible:false
+           id:_callButton
+           background: Rectangle {
+                  Image {
+                      id: _callButtonImage
+                      source: "qrc:/images/jiaodizhu1.png"
+                      fillMode: Image.PreserveAspectFit
+                      anchors.centerIn: parent
+                  }
+              }
+               onClicked:{
+                            callButton.visible=false
+                            notcallButton.visible=false
+                            mecall.visible=!mecall.visible
+                            console.log("player call")
+                            //设置叫地主和农民形象消失，地主形象出现
 
-            cursorShape:Qt.PointingHandCursor // 鼠标悬停时显示手形光标
-    }
-    }
+                            if (mecall.visible) {
+                                               mehideTimer.start();
+                                           } else {
+                                               mehideTimer.stop();
+           }
+       }
+               HoverHandler{
+                   acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                   cursorShape: Qt.PointingHandCursor
+                   onHoveredChanged: {
+                               if (hovered) {
+                                   callButtonImage.source="qrc:/images/jiaodizhu2.png"; // 悬停时的图片路径
+                               } else {
+                                   callButtonImage.source="qrc:/images/jiaodizhu1.png"; // 恢复默认图片
+                               }
+                           }
+               }
+           }
+     }
+
     //不抢动画
     Image{
         visible:false
@@ -202,39 +268,6 @@ Item {
                 _rlandlor.visible = true;// 定时器触发后显示图片
             }
         }
-    //玩家叫地主
-    Image{
-        visible:false
-        id:_callButton
-        source: "qrc:/images/jiaodizhu1.png"
-        anchors.left: startButton.right
-        anchors.top:notcallButton.top
-        anchors.topMargin: -5
-        // 添加动画
-        MouseArea{
-            anchors.fill: parent
-            hoverEnabled: true // 启用鼠标悬停事件
-
-            //鼠标悬停于叫地主按钮
-            onEntered: {callButton.source="qrc:/images/jiaodizhu2.png"}
-            onClicked:{
-                callButton.visible=false
-                notcallButton.visible=false
-                mecall.visible=!mecall.visible
-                //设置叫地主和农民形象消失，地主形象出现
-
-                if (mecall.visible) {
-                                   mehideTimer.start();
-                               } else {
-                                   mehideTimer.stop();
-            }
-        }
-            // 鼠标离开时触发的信号处理函数
-             onExited: {callButton.source="qrc:/images/jiaodizhu1.png"}
-
-             cursorShape: Qt.PointingHandCursor // 鼠标悬停时显示手形光标
-    }
-    }
 
     //叫地主动画
     Image{
@@ -246,6 +279,15 @@ Item {
         anchors.horizontalCenter: centercard.horizontalCenter
     }
     //叫地主定时器
+
+    Timer {
+        id: displayclockTimer
+        interval: 5000 // 设置为5000毫秒，即5秒
+        repeat: false // 只触发一次
+        onTriggered: {
+            _clockImage.visible = true // 定时器触发后设置图片可见
+        }
+    }
     Timer {
             id: mehideTimer
             interval: 1000 // 1秒后触发
@@ -257,6 +299,44 @@ Item {
                  _melandlor.visible = true;
             }
 
+        }
+    //玩家叫不叫地主无反应倒计时
+    Timer {
+            id:_clock
+            interval: 1000 // 每秒触发一次
+            running: true
+            repeat: true
+            onTriggered: {
+                if (currentSecond > 0) {
+                    currentSecond--;
+                } else {
+                    _clock.running = false; // 计时器停止
+                    // 在此处触发闹钟倒计时结束的信号或其他处理
+                }
+            }
+        }
+
+        Image {
+            id:_clockImage
+            source: "qrc:/images/clock.png"
+            width:70
+            height:70
+            anchors.top:centercard.bottom
+            anchors.topMargin:50
+            anchors.horizontalCenter: centercard.horizontalCenter
+            visible: false
+            onSourceChanged: {
+                // 确保在图片加载后更新显示区域
+                updateDisplay();
+            }
+
+            function updateDisplay() {
+                if (clockImage.status === Image.Ready) {
+                    var digitX = 10; // 假设数字显示区域在图片中的位置和尺寸
+                    var digitY = 15;
+                    clockImage.sourceRect = Qt.rect((currentSecond % 10) * digitWidth + digitX, digitY, digitWidth, digitHeight);
+                }
+            }
         }
 
 }

@@ -76,5 +76,7 @@
         <file>images/chupai3.png</file>
         <file>images/jiaodizhu1.png</file>
         <file>images/jiaodizhu2.png</file>
+        <file>images/clock.png</file>
+        <file>images/number.png</file>
     </qresource>
 </RCC>
