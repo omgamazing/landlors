@@ -33,9 +33,6 @@ ApplicationWindow {
         height:140
         anchors.left: window.left
         y:(parent.height-height)/2.3
-
-
-
     }
     Image{
         id:_rplayer
@@ -46,9 +43,6 @@ ApplicationWindow {
         mirror: true // 水平镜像翻转
         anchors.right: parent.right
         y:(parent.height-height)/2.3
-
-
-
     }
 
     //自己
@@ -59,19 +53,13 @@ ApplicationWindow {
         height:140
         x:100
         y:450
-
-
     }
-
 
     //中间卡牌
     Image{
         id:_centercard
         source: "qrc:/poker/rear.png"
         anchors.centerIn: parent
-
-
-
     }
 
     //左右卡牌
@@ -80,15 +68,12 @@ ApplicationWindow {
         source: "qrc:/poker/rear.png"
         anchors.verticalCenter:parent.verticalCenter
         anchors.left: lplayer.right
-
-
     }
     Image{
         id:_rcard
         source: "qrc:/poker/rear.png"
         anchors.verticalCenter:parent.verticalCenter
         anchors.right: rplayer.left
-
     }
 
     //开始按钮
@@ -114,7 +99,6 @@ ApplicationWindow {
             onExited: {startButton.source="qrc:/images/start-1.png"}
 
             cursorShape: Qt.PointingHandCursor // 鼠标悬停时显示手形光标
-
         }
     }
 
@@ -129,7 +113,6 @@ ApplicationWindow {
     property int count_me:0
     property int count_left:0
     property int count_right:0
-
 
     //分数显示栏
     ColumnLayout{
@@ -147,21 +130,5 @@ ApplicationWindow {
             Text{text:"左侧机器人 "+count_left+"分";font.pointSize: 16;color:"white"}
             Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
     }
-
-    /*Component.onCompleted: {
-      var cards:[];
-            console.log("Start");
-            // 添加牌到牌组中，可以根据需要自定义牌的花色和牌面
-            cards.push({ suit: 1, rank: 1 }); // 黑桃 A
-            cards.push({ suit: 2, rank: 2 }); // 红桃 2
-            cards.push({ suit: 3, rank: 3 }); // 梅花 3
-            cards.push({ suit: 5, rank: 14 }); // 小王
-            cards.push({ suit: 5, rank: 15 }); // 大王
-
-            // 打印所有牌的信息
-            console.log("所有牌的信息:");
-            for (var i = 0; i < cards.length; i++) {
-                console.log("花色:", cards[i].suit, " 牌面:", cards[i].rank);
-            }
-        }*/
+    Card{}
 }
