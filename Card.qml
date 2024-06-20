@@ -18,37 +18,37 @@ Item {
     Component.onCompleted: {
         //myCards.push({suit: 5, rank: 16});//大王
         //myCards.push({ suit: 5, rank: 17});//小王
-        //myCards.push({suit:3,rank:13})//三带一 三K带3
-        //myCards.push({suit:1,rank:13})
-        //myCards.push({suit:2,rank:13})
-        //myCards.push({suit:3,rank:3})
-        //otherCards.push({suit: 1, rank: 5});//三5 带6
-        //otherCards.push({ suit: 2, rank: 5 });
-        //otherCards.push({ suit: 3, rank: 5 });
-        //otherCards.push({ suit: 1, rank: 6 });
-        //var isPlay=isAllowedCards(myCards,otherCards);
-        //console.log("我是否可以出牌？",isPlay)
+        myCards.push({suit:3,rank:13})//三带一 三K带3
+        myCards.push({suit:1,rank:13})
+        myCards.push({suit:2,rank:13})
+        myCards.push({suit:3,rank:3})
+        otherCards.push({suit: 1, rank: 5});//三5 带6
+        otherCards.push({ suit: 2, rank: 5 });
+        otherCards.push({ suit: 3, rank: 5 });
+        otherCards.push({ suit: 1, rank: 6 });
+        var isPlay=isAllowedCards(myCards,otherCards);
+        console.log("我是否可以出牌？",isPlay)
 
-        cards.push({suit:3,rank:13})//三带一 三K带3
-        cards.push({suit:1,rank:13})
-        cards.push({suit:2,rank:13})
-        cards.push({suit:3,rank:3})
+        //cards.push({suit:3,rank:13})//三带一 三K带3
+        //cards.push({suit:1,rank:13})
+        //cards.push({suit:2,rank:13})
+        //cards.push({suit:3,rank:3})
 
     }
 
 //获取牌的类型
-function getCardType()
+function getCardType(cards)
 {
-if(isSingle())return CardType.single;
-else if(isDouble())return CardType.two;
-else if(isTripleWithOne())return CardType.tripleWithOne;
-else if(isTripleWithTwo())return CardType.tripleWithTwo;
-else if(isPlaneWithTwoSingle())return CardType.planeWithTwoSingle;
-else if(isPlaneWithTwoDouble())return CardType.planeWithTwoDouble;
-else if(isStraight())return CardType.straight;
-else if(isStraightWithDouble())return CardType.straightWithDouble;
-else if(isBomb())return CardType.bomb;
-else if(isJokers())return CardType.jokers;
+if(isSingle(cards))return CardType.single;
+else if(isDouble(cards))return CardType.two;
+else if(isTripleWithOne(cards))return CardType.tripleWithOne;
+else if(isTripleWithTwo(cards))return CardType.tripleWithTwo;
+else if(isPlaneWithTwoSingle(cards))return CardType.planeWithTwoSingle;
+else if(isPlaneWithTwoDouble(cards))return CardType.planeWithTwoDouble;
+else if(isStraight(cards))return CardType.straight;
+else if(isStraightWithDouble(cards))return CardType.straightWithDouble;
+else if(isBomb(cards))return CardType.bomb;
+else if(isJokers(cards))return CardType.jokers;
 }
 
 //判断当前出牌是否合理
@@ -92,7 +92,7 @@ function isAllowedCards(myCards,otherCards)
 }
 
 //排序,冒泡排序
-function sortCards()
+function sortCards(cards)
 {
     for (let i = 0; i < cards.length - 1; i++) {
             for (let j = 0; j < cards.length - 1 - i; j++) {
@@ -107,13 +107,13 @@ function sortCards()
         }
 }
 //判断是否为单牌
-function isSingle()
+function isSingle(cards)
 {
     console.log("正在判断牌型是否为Single");
     return cards.length===1;
 }
 //判断是否为对子
-function isDouble()
+function isDouble(cards)
 {
     if (cards.length !== 2) {
             return false;
@@ -123,7 +123,7 @@ function isDouble()
 }
 
 //判断是否为三带一
-function isTripleWithOne() {
+function isTripleWithOne(cards) {
     console.log("正在判断牌型是否为TripleWithOne");
     if (cards.length !== 4) {
         return false;
@@ -134,7 +134,7 @@ function isTripleWithOne() {
 }
 
 //判断是否为三带二
-function isTripleWithTwo() {
+function isTripleWithTwo(cards) {
     console.log("正在判断牌型是否为TripleWithTwo");
     if (cards.length !== 5) {
         return false;
@@ -145,12 +145,12 @@ function isTripleWithTwo() {
             cards[3].rank === cards[4].rank && cards[2].rank !== cards[3].rank);
 }
 //判断是否为飞机带两单张
-function isPlaneWithTwoSingle() {
+function isPlaneWithTwoSingle(cards) {
     console.log("正在判断牌型是否为PlaneWithTwoSingle");
     if (cards.length < 8 || cards.length % 5 !== 0) {
         return false;
     }
-    sortCards();
+    sortCards(cards);
 
     for (var i = 0; i < cards.length - 4; i += 3) {
         if (cards[i].rank !== cards[i+1].rank || cards[i].rank !== cards[i+2].rank) {
@@ -163,7 +163,7 @@ function isPlaneWithTwoSingle() {
     return false;
 }
 //判断是否为飞机带两对
-function isPlaneWithTwoDouble() {
+function isPlaneWithTwoDouble(cards) {
     console.log("正在判断牌型是否为PlaneWithTwoDouble");
     if (cards.length < 10 || cards.length % 5 !== 0) {
         return false;
@@ -185,7 +185,7 @@ function isPlaneWithTwoDouble() {
     return true;}
 }
 //判断是否为顺子 五张以上连续单牌
-function isStraight(){
+function isStraight(cards){
     console.log("正在判断牌型是否为Straight");
     if (cards.length < 5 || cards.length > 12) {
         return false;
@@ -200,7 +200,7 @@ function isStraight(){
     return true;
 }
 //判断是否为连对 三个以上连续双牌
-function isStraightWithDouble() {
+function isStraightWithDouble(cards) {
     console.log("正在判断牌型是否为StraightWithDouble");
     if (cards.length < 6 || cards.length % 2 !== 0) {
         return false;
@@ -215,23 +215,23 @@ function isStraightWithDouble() {
     return true;
 }
 //判断是否为炸弹
-function isBomb() {
+function isBomb(cards) {
     console.log("正在判断牌型是否为Bomb");
     if (cards.length !== 4) {
         return false;
     }
-    sortCards();
+    sortCards(cards);
     console.log("当前手牌为bomb！");
     return cards[0].rank === cards[1].rank && cards[1].rank === cards[2].rank && cards[2].rank === cards[3].rank;
 }
 
 //判断是否为王炸
-function isJokers() {
+function isJokers(cards) {
     console.log("正在判断牌型是否为Jokers");
     if (cards.length !== 2) {
         return false;
     }
-    sortCards();
+    sortCards(cards);
     console.log("当前牌型是王炸！");
     return cards[0].rank === 16 && cards[1].rank === 17;
 }
