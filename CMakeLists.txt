@@ -23,8 +23,8 @@ qt_add_qml_module(
   RESOURCES
   resources.qrc
   QML_FILES
-  Images.qml
-  Card.qml)
+  Card.qml
+  CardType.qml)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 

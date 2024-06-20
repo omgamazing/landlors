@@ -121,7 +121,6 @@ ApplicationWindow {
         }
     }
 
-
     //游戏背景
     background: Image {
         id:_back
@@ -129,6 +128,8 @@ ApplicationWindow {
         fillMode: Image.PreserveAspectCrop
         anchors.fill: parent
     }
+
+<<<<<<< HEAD
 
 
 
@@ -153,8 +154,6 @@ ApplicationWindow {
             Text{text:"    我\t"+count_me+"分";font.pointSize: 16;color:"white"}
             Text{text:"左侧机器人 "+count_left+"分";font.pointSize: 16;color:"white"}
             Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
-
-
     }
 
 
@@ -207,4 +206,11 @@ ApplicationWindow {
             }
         }
 
+
+            // 打印所有牌的信息
+            console.log("所有牌的信息:");
+            for (var i = 0; i < cards.length; i++) {
+                console.log("花色:", cards[i].suit, " 牌面:", cards[i].rank);
+            }
+        }
 }
