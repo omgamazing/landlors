@@ -78,10 +78,5 @@
         <file>images/jiaodizhu2.png</file>
         <file>images/clock.png</file>
         <file>images/number.png</file>
-        <file>game.js</file>
-        <file>Actions.qml</file>
-        <file>Dialogs.qml</file>
-        <file>Content.qml</file>
-        <file>Handcard.qml</file>
     </qresource>
 </RCC>

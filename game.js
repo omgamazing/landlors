@@ -8,7 +8,7 @@ function start(){
     console.log("---startGame----")
 
     //创建Deck对象
-    var component = Qt.createComponent("Deck.qml");
+    var component = Qt.createComponent("CardsPrepare.qml");
     if (component.status === Component.Ready) {
         var deck= component.createObject();
     }

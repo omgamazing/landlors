@@ -25,12 +25,15 @@ qt_add_qml_module(
   Card.qml
   CardType.qml
   Player.qml
-  Deck.qml
-  Handcard.qml
+  CardsPrepare.qml
+
   game.js
   SOURCES
   RESOURCES
-  resources.qrc)
+  resources.qrc
+  QML_FILES Cards.qml
+  QML_FILES Robot.qml
+  QML_FILES UserPlayer.qml)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 
