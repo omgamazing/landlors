@@ -1,6 +1,10 @@
+//用户玩家类，继承玩家类
 import QtQuick 2.0
 Item {
-    //userplayer
+
+    Player{
+        //id:userPlayer
+    }
 
     Component.onCompleted: {
         // 初始化操作
