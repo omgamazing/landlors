@@ -4,6 +4,8 @@ import QtQuick
 
 Item {
 
+    property alias dialogs:_dialogs
+
     //定义了Dialogs,Dialogs.qml实现的具体的对话框
     Dialogs{
         id:_dialogs

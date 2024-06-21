@@ -26,6 +26,17 @@ ApplicationWindow {
     property alias startButton:_startButton
      property alias notcallButton:_notcallButton
     property alias callButton:_callButton
+
+    menuBar: MenuBar{
+      Menu {
+            title: qsTr("File")
+            MenuItem {action:actions.start}
+            MenuItem {action:actions.quit}
+            MenuItem {action:actions.about}
+        }
+
+    }
+
     //游戏背景
     background: Image {
         id:_back
@@ -89,9 +100,11 @@ ApplicationWindow {
                     anchors.centerIn: parent
                 }
             }
-    action: actions.start
-     }
+    onClicked:Controller.start()
+
+    }
 }
+
  RowLayout {
      x:395
      y: 470
@@ -107,7 +120,7 @@ ApplicationWindow {
                anchors.centerIn: parent
            }
        }
-    action:actions.notcall
+    onClicked:Controller.start()
      }
      //玩家叫地主
  Button{
@@ -120,6 +133,7 @@ ApplicationWindow {
               anchors.centerIn: parent
           }
       }
+
    action:actions.call
    }
  }
@@ -135,12 +149,13 @@ ApplicationWindow {
          repeat: false
          onTriggered: myhide()
      }
+
 Actions{
     id:actions
-    start.onTriggered: Controller.start();
+    start.onTriggered:{ Controller.start()}
     call.onTriggered: Controller.call();
     notcall.onTriggered: Controller.notcall();
-
+    about.onTriggered: content.dialogs.about.open()
 }
 
     property int count_me:0

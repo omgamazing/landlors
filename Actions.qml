@@ -6,14 +6,33 @@ import QtQuick.Controls
 
 Item {
     property alias start: _start
+    property alias quit: _quit
+    property alias about: _about
     property alias call: _call
     property alias notcall: _notcall
+
+
     Action{
         id:_start
-        onTriggered:{
-        startButton.clicked();
+        text: qsTr("&Start...")
+
     }
-}
+
+
+    Action {
+        id: _quit
+        text: qsTr("&Quit")
+        icon.name: "application-exit"
+        shortcut: "Ctrl+q"
+        onTriggered: Qt.quit();
+    }
+
+    Action {
+        id: _about
+        text: qsTr("&About")
+        icon.name: "help-about"
+    }
+
     Action{
         id:_call
         onTriggered:{

@@ -2,9 +2,21 @@
 //开始
 function start(){
     startButton.visible = false;
-    notcallButton.visible = !notcallButton.visible;
-    callButton.visible = !callButton.visible;
-    displayclockTimer.start();
+
+    //displayclockTimer.start();
+
+    console.log("---startGame----")
+
+    //创建Deck对象
+    var component = Qt.createComponent("Deck.qml");
+    if (component.status === Component.Ready) {
+        var deck= component.createObject();
+    }
+
+    notcallButton.visible = true;
+    callButton.visible = true;
+
+
 }
 //不叫
 function notcall(){
