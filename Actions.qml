@@ -5,10 +5,25 @@ import QtQuick
 import QtQuick.Controls
 
 Item {
+    property alias start: _start
+    property alias call: _call
+    property alias notcall: _notcall
     Action{
         id:_start
-
-
+        onTriggered:{
+        startButton.clicked();
     }
-
+}
+    Action{
+        id:_call
+        onTriggered:{
+        callButton.clicked();
+    }
+}
+    Action{
+        id:_notcall
+        onTriggered:{
+        notcallButton.clicked();
+    }
+}
 }
