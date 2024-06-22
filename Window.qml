@@ -56,11 +56,10 @@ ApplicationWindow {
     property alias back:_back
     property alias rplayer:_rplayer
     property alias me:_me
+    property alias mecall:_mecall
+    property alias melandlor:_melandlor
     property alias lplayer:_lplayer
     property alias centercard:_centercard
-    property alias startButton:_startButton
-     property alias notcallButton:_notcallButton
-    property alias callButton:_callButton
 
     menuBar: MenuBar{
       Menu {
@@ -120,57 +119,119 @@ ApplicationWindow {
      y:450
 
  }
+ Image{
+     id:_melandlor
+     visible:false
+     source:"qrc:/images/people-1.png"
+     width:100
+     height:140
+     x:100
+     y:450
+
+ }
  //开始
  ColumnLayout {
-     anchors.top: centercard.bottom
+    anchors.top: centercard.bottom
      anchors.topMargin: 100
      anchors.horizontalCenter: centercard.horizontalCenter
-     Button {
-         id: _startButton
+     Image{
+         property alias startbutton:startButtonArea
+         id: _startImage
          visible: true
-         background: Rectangle {
-                Image {
-                     source: _startButton.hovered ? "qrc:/images/start-2.png" : "qrc:/images/start-1.png"
-                    fillMode: Image.PreserveAspectFit
-                    anchors.centerIn: parent
-                }
-            }
-    onClicked:Controller.start()
+        source:"qrc:/images/start-1.png"
+        fillMode: Image.PreserveAspectFit
+     Rectangle {
+         id: startButtonArea
+         color: "transparent"
+         width: _startImage.width // 按钮宽度
+         height: _startImage.height // 按钮高度
+          anchors.fill: parent
+         TapHandler {
+             cursorShape: Qt.PointingHandCursor
+             onTapped:
+                Controller.start()
+             }
 
-    }
+         }
+         HoverHandler{
+              cursorShape: Qt.PointingHandCursor
+              onHoveredChanged: {
+    _startImage.source = hovered ? "qrc:/images/start-2.png" : "qrc:/images/start-1.png"
+                              }
+         }
+ }
 }
 
  RowLayout {
-     x:395
-     y: 470
-      spacing: 200
+     x:320
+     y: 420
+      spacing: 120
       //不叫地主
-     Button{
-    visible:false
-    id:_notcallButton
-    background: Rectangle {
-           Image {
-               source:_notcallButton.hover ? "qrc:/images/bujiao2.png":"qrc:/images/bujiao1.png"
-               fillMode: Image.PreserveAspectFit
-               anchors.centerIn: parent
-           }
-       }
-    onClicked:Controller.start()
+     Image{
+         property alias notcallbutton:notcallButtonArea
+         signal isclicked()
+         id: _notcallButtonImage
+         visible: false
+        source:"qrc:/images/bujiao1.png"
+        fillMode: Image.PreserveAspectFit
+     Rectangle {
+         id: notcallButtonArea
+         color: "transparent"
+         width: _notcallButtonImage.width // 按钮宽度
+         height: _notcallButtonImage.height // 按钮高度
+          anchors.fill: parent
+         TapHandler {
+             cursorShape: Qt.PointingHandCursor
+             onTapped: {
+                 Controller.notcall()
+             }
+         }
+     }
+     HoverHandler{
+          cursorShape: Qt.PointingHandCursor
+          onHoveredChanged: {
+        _notcallButtonImage.source = hovered ? "qrc:/images/bujiao2.png" : "qrc:/images/bujiao1.png"
+                          }
+     }
      }
      //玩家叫地主
- Button{
-   visible:false
-   id:_callButton
-   background: Rectangle {
-          Image {
-              source: _notcallButton.hover ?"qrc:/images/jiaodizhu2.png":"qrc:/images/jiaodizhu1.png"
-              fillMode: Image.PreserveAspectFit
-              anchors.centerIn: parent
-          }
-      }
+ Image{
+     property alias callbutton:callButtonArea
+     signal isclicked()
+     id: _callButtonImage
+     visible: false
+    source:"qrc:/images/jiaodizhu1.png"
+    fillMode: Image.PreserveAspectFit
+ Rectangle {
+     id: callButtonArea
+     color: "transparent"
+     width: _callButtonImage.width // 按钮宽度
+     height: _callButtonImage.height // 按钮高度
+      anchors.fill: parent
+     TapHandler {
+         cursorShape: Qt.PointingHandCursor
+         onTapped: {
+             Controller.call()
+         }
 
-   action:actions.call
-   }
+     }
+     HoverHandler{
+          cursorShape: Qt.PointingHandCursor
+          onHoveredChanged: {
+   _callButtonImage.source = hovered ? "qrc:/images/jiaodizhu2.png" : "qrc:/images/jiaodizhu1.png"
+                          }
+     }
+ }
+ }
+ }
+ //叫地主动画
+ Image{
+     visible:false
+     id:_mecall
+     source: "qrc:/images/jiaodizhu.png"
+     anchors.top:centercard.bottom
+     anchors.topMargin:10
+     anchors.horizontalCenter: centercard.horizontalCenter
  }
  Timer {
          id: hidecallTimer
@@ -184,12 +245,19 @@ ApplicationWindow {
          repeat: false
          onTriggered: myhide()
      }
+ //设置叫地主和农民形象消失，地主形象出现
+ function myhide(){
+             // 定时器触发后隐藏图片按钮
+            _mecall.visible=false;
+             _me.visible = false;
+             _melandlor.visible = true;// 定时器触发后显示图片
+         }
 
 Actions{
     id:actions
-    start.onTriggered:{ Controller.start()}
-    call.onTriggered: Controller.call();
-    notcall.onTriggered: Controller.notcall();
+    start.onTriggered:Controller.start()
+    call.onTriggered: Controller.call()
+    notcall.onTriggered: Controller.notcall()
     about.onTriggered: content.dialogs.about.open()
 }
 

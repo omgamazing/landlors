@@ -44,4 +44,10 @@ Item {
         notcallButton.clicked();
     }
 }
+    Action{
+        id:_myhide
+        onTriggered:{
+       myhidecallTimer.start();
+    }
+}
 }

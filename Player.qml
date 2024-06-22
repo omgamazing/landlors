@@ -77,15 +77,7 @@ Item {
        anchors.verticalCenter:parent.verticalCenter
     }
 
-    //叫地主动画
-    Image{
-        visible:false
-        id:_mecall
-        source: "qrc:/images/jiaodizhu.png"
-        anchors.top:centercard.bottom
-        anchors.topMargin:10
-        anchors.horizontalCenter: centercard.horizontalCenter
-    }
+
     //玩家叫不叫地主无反应倒计时
     Timer {
             id:_clock
