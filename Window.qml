@@ -8,41 +8,9 @@ import "game.js" as Controller
 ApplicationWindow {
     id:window
 
-    /*
-        Player {
-            id: player
-            // 定义玩家属性和方法
-        }
+    //Cards{}
+    //CardType{}
 
-        Cards {
-            id: cards
-            // 定义卡片属性和方法
-        }
-
-        Rectangle {
-            width: parent.width
-            height: parent.height
-
-            Button {
-                text: "Make Strategy"
-                onClicked: {
-                    var strategy = new Strategy(player, cards);
-                    var result = strategy.makeStrategy();
-                    console.log("Strategy:", result);
-                }
-            }
-
-            Button {
-                text: "First Play"
-                anchors.top: parent.top
-                onClicked: {
-                    var strategy = new Strategy(player, cards);
-                    var result = strategy.firstPlay();
-                    console.log("First Play:", result);
-                }
-            }
-
-            // 更多按钮和交互...*/
     visible: true
     width:1000
     height:650
@@ -280,4 +248,9 @@ Actions{
             Text{text:"左侧机器人 "+count_left+"分";font.pointSize: 16;color:"white"}
             Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
     }
+
+    Player{
+        id:userplayer
+    }
+
 }

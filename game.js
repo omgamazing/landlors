@@ -17,10 +17,16 @@ function start(){
         _notcallButtonImage.visible = true;
        _callButtonImage.visible = true;
     }
-    }
-    else if(component.status === Component.Error){
-            console.error("Error loading CardsPrepare.qml");
-        }
+    notcallButton.visible = true;
+    callButton.visible = true;
+
+    var userplayer = Qt.createComponent("Player.qml");
+    userplayer.name="uyg"
+    console.log(userplayer.name)
+
+    userplayer.notifyGrabLordBet.connect(function() {
+    console.log("接受");})
+    userplayer.triggerNotifyGrabLordBet()
 }
 
 

@@ -55,6 +55,7 @@ Item {
     {
         cards=[]
         updateCards();
+        console.log("清空！")
     }
 
     //检查牌是否存在,卡的下标存在就存在
@@ -72,6 +73,7 @@ Item {
                     max = cards[i].rank;
                 }
             }
+            console.log("最小点数：",max)
             return max;
     }
     //找出cards最小的点数
@@ -84,6 +86,7 @@ Item {
                     min = cards[i].rank;
                 }
             }
+            console.log("最小点数：",min)
             return min;
     }
     //打印所有卡牌信息
@@ -116,5 +119,26 @@ Item {
        function updateCards()
        {
            cardRepeater.model = cards;
+           console.log("更新卡牌!")
        }
+
+       /*Component.onCompleted: {
+               // 创建并添加一些卡片
+               var newCards = [
+                   {suit: 1, rank: 6},
+                   {suit: 2, rank: 7},
+                   {suit: 4, rank: 13}
+               ];
+               addCards(newCards);
+               // 创建移除卡片的数组
+               var removalCards = [
+                   {suit: "Spades", rank: 3}
+               ];
+               removeCards(removalCards);
+
+               // 打印所有卡片信息
+               printAllCardInfo();
+           minPoint()
+           removeCard(1,6)
+           }*/
 }
