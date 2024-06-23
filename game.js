@@ -2,7 +2,8 @@
 //开始
 function start(){
     _startImage.visible = false;
-
+    var backgroundMusic = Qt.createComponent("Music.qml");
+    backgroundMusic.play()
     //displayclockTimer.start();
 
     console.log("---startGame----")
@@ -17,8 +18,10 @@ function start(){
         _notcallButtonImage.visible = true;
        _callButtonImage.visible = true;
     }
-    notcallButton.visible = true;
-    callButton.visible = true;
+    }
+    else if(component.status === Component.Error){
+        console.error("Error loading CardsPrepare.qml");
+    }
 
     var userplayer = Qt.createComponent("Player.qml");
     userplayer.name="uyg"
