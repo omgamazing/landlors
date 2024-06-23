@@ -13,16 +13,7 @@ function start(){
         var deck= component.createObject();
     }
 
-    notcallButton.visible = true;
-    callButton.visible = true;
 
-    var userplayer = Qt.createComponent("Player.qml");
-    userplayer.name="uyg"
-    console.log(userplayer.name)
-
-    userplayer.notifyGrabLordBet.connect(function() {
-    console.log("接受");})
-    userplayer.triggerNotifyGrabLordBet()
 }
 //不叫
 function notcall(){
