@@ -11,6 +11,10 @@ Item {
         id:_dialogs
     }
 
+    CardsPrepare{
+    }
+
+
 
 
 }
