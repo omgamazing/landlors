@@ -151,7 +151,7 @@ class Cards {
         return cardsArray;
     };
 
-   /* // 测试函数，打印所有卡牌信息
+   /*// 测试函数，打印所有卡牌信息
     printAllCardInfo() {
         this.m_cards.forEach(card => {
             console.log(`Suit: ${card.getSuit()}, Rank: ${card.getPoint()}`);

@@ -19,9 +19,15 @@ function start(){
     _landlor.visible=false
     _lplayer.visible=true
     _rplayer.visible=true
+    landlorsDecks_location.visible=false
+
+   //var backgroundMusic = Qt.createComponent("Music.qml");
+   //backgroundMusic.play()
+
     //displayclockTimer.start();
 
     console.log("---startGame----")
+
 
     initializeDeck()
     shuffleDeck()

@@ -268,6 +268,7 @@ ApplicationWindow {
             Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
     }
 
+
     RowLayout {
             id: myDecks_location
             visible:false
