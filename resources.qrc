@@ -76,5 +76,8 @@
         <file>images/jiaodizhu2.png</file>
         <file>images/clock.png</file>
         <file>images/number.png</file>
+        <file>music.qml</file>
+        <file>music/MusicEx_Normal.mp3</file>
+        <file>music/MusicEx_Normal2.mp3</file>
     </qresource>
 </RCC>
