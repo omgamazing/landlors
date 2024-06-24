@@ -27,9 +27,9 @@ qt_add_qml_module(
   SOURCES
   RESOURCES
   resources.qrc
-  QML_FILES card.js
-  QML_FILES player.js
-  QML_FILES )
+  QML_FILES
+  cardtype.cpp
+  QML_FILES)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 
