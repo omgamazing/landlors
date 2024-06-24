@@ -2,8 +2,8 @@
 //开始
 function start(){
     _startImage.visible = false;
-    var backgroundMusic = Qt.createComponent("Music.qml");
-    backgroundMusic.play()
+   //var backgroundMusic = Qt.createComponent("Music.qml");
+   //backgroundMusic.play()
     //displayclockTimer.start();
 
     console.log("---startGame----")
@@ -23,13 +23,6 @@ function start(){
         console.error("Error loading CardsPrepare.qml");
     }
 
-    var userplayer = Qt.createComponent("Player.qml");
-    userplayer.name="uyg"
-    console.log(userplayer.name)
-
-    userplayer.notifyGrabLordBet.connect(function() {
-    console.log("接受");})
-    userplayer.triggerNotifyGrabLordBet()
 }
 
 
