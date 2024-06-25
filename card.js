@@ -1,304 +1,560 @@
 //创建card属性 point：牌面 suit：花色
 //花色 每一项有唯一的整数值
 const CardSuit={
-    Diamond:0,//菱形
-    Club:1, //梅花
-    Heart:2, //红心
-    Spade:3//黑桃
+    Diamond:1,//菱形
+    Club:2, //梅花
+    Heart:3, //红心
+    Spade:4,//黑桃
+    Joker:5
 }
-//牌面
-const CardPoint={
-     Point_3:3,
-     Point_4:4,
-     Point_5:5,
-     Point_6:6,
-     Point_7:7,
-     Point_8:8,
-     Point_9:9,
-     Point_10:10,
-     Point_J:11,
-     Point_Q:12,
-     Point_K:13,
-     Point_A:14,
-     Point_2:15,
-     Point_SJ:16,
-     Point_BJ:17,
-     Point_Unknow:0
-}
-const sortType={//排序方法 升序 降序 不排
-    Asc:'Asc', Desc:'Desc', NoSort:'NoSort'
-};
 const CardType={
-    Single: "Single",//单
-    Pair: "Pair",//对子
+            Single:"Single", //单
+            Pair: "Pair",   //对子
 
-    Triple: "Triple",//三
-    TripleWithSingle: "TripleWithSingle",//三带一
-    TripleWithPair: "TripleWithPair",//三带一对
+            Triple: "Triple",           //三
+            TripleWithSingle: "TripleWithSingle", //三带一
+            TripleWithPair: "TripleWithPair",   //三带一对
 
-    Plane: "Plane",//飞机
-    PlaneWithTwoSingle: "PlaneWithTwoSingle",//飞机带两单
-    PlaneWithTwoPair: "PlaneWithTwoPair",//飞机带两队
+            Plane: "Plane",              //飞机
+            PlaneWithTwo: "PlaneWithTwoSingle", //飞机带两单/一对
+            PlaneWithTwoPair: "PlaneWithTwoPair",   //飞机带两队
 
-    Straight: "Straight",//顺子
-    StraightWithPair: "StraightWithPair",//连对
+            Straight: "Straight",         //顺子
+            StraightWithPair: "StraightWithPair", //连对
 
-    Bomb: "Bomb",//炸弹
-    BombWithSingle: "BombWithSingle",//炸弹带一个
-    BombWithPair: "BombWithPair",//炸弹带一对
-    BombWithTwoSingle: "BombWithTwoSingle",//炸弹带两单
+            Bomb: "Bomb",            //炸弹
+            BombWithTow: "BombWithTwo",     //炸弹带一对或两单
+            BombWithTwoPair: "BombWithPair", //炸弹带两对
 
-    Jokers: "Jokers",//王炸
-    JokersWintSingle: "JokersWintSingle",//王炸带一个
-    JokersWithPair: "JokersWithPair",//王炸带一对
-    JokersWithTwoSingle: "JokersWithTwoSingle",//王炸带两单
+            Jokers: "Jokers", //王炸
 
-    Unknown: "Unknown",//未知
-    Pass: "Pass"//过
+            Unknown: "Unknown", //未知 14
+            Pass: "Pass"     //过
 }
 
-class Card {
-    constructor(point,suit){
-        this.point=point;
-        this.suit=suit;
-    }
-    getPoint(){
-        return this.point;
-    };
-    getSuit(){
-        return this.suit;
-    }
-
-//比较牌面大小
-    lessSort(c1, c2) {
-    if (c1.getPoint() !== c2.getPoint()) {
-        return c1.getPoint() < c2.getPoint();
-    } else {
-        return c1.getSuit() < c2.getSuit();
-    }
-}
-//获取大牌
-     greaterSort(c1, c2) {
-    if (c1.getPoint() !== c2.getPoint()) {
-        return c1.getPoint() > c2.getPoint();
-    } else {
-        return c1.getSuit() > c2.getSuit();
-    }
-}
-}
-//cards
-class Cards {
-    constructor() {
-    this.m_cards = new Set();  // 确保元素唯一
-}
-    // 添加一张卡牌
-    add (card) {
-        this.m_cards.add(card);
-    };
-
-    // 添加多张卡牌
-    addMultiple (cards) {
-        this.m_cards = cards.concat(cards);
-       // cards.forEach(card => this.m_cards.add(card));
-    };
-
-    // 删除一张卡牌
-    remove(card) {
-        this.m_cards.delete(card);
-    };
-
-    // 删除多张卡牌
-    removeMultiple(cards) {
-        cards.forEach(card => this.m_cards.delete(card));
-    };
-
-    // 获取卡牌数量
-    cardCount() {
-        return this.m_cards.size;
-    };
-
-    // 是否为空
-    isEmpty () {
-        return this.m_cards.size === 0;
-    };
-
-    // 清空卡牌
-    clear () {
-        this.m_cards.clear();
-    };
-
-    // 随机取出一张卡牌
-    takeRandomCard () {
-        let cardsArray = Array.from(this.m_cards);
-        if(cardsArray.length===0){
-            return null;
+function Card(point,suit){
+    this.point=point;
+    this.suit=suit;
+    //根据卡牌定义名字
+    /*
+    黑桃：1-1.png 到 1-13.png
+    红桃：2-1.png 到 2-13.png
+    梅花：3-1.png 到 3-13.png
+    方块：4-1.png 到 4-13.png
+    小王：5-1.png
+    大王：5-2.png
+*/
+    if (this.point >= 3 && this.point <= 10) {
+            this.name = `${this.getSuitName(this.suit)}-${this.point}.png`; //  3-10
+        } else if (this.point === 1) {
+            this.name = `${this.getSuitName(this.suit)}-1.png`; // A
+        } else if (this.point === 11) {
+            this.name = `${this.getSuitName(this.suit)}-J.png`; // J
+        } else if (this.point === 12) {
+            this.name = `${this.getSuitName(this.suit)}-Q.png`; // Q
+        } else if (this.point === 13) {
+            this.name = `${this.getSuitName(this.suit)}-K.png`; // K
+        } else if (this.point === 14) {
+            this.name = `${this.getSuitName(this.suit)}-15.png`; // 鬼
         }
-
-        let randomIndex = Math.floor(Math.random() * cardsArray.length);
-        let randomCard = cardsArray[randomIndex];
-        this.m_cards.delete(randomCard);  // 从集合中移除这张牌
-        return randomCard;
-    };
-
-    // 将卡牌转换为数组，并排序
-    toCardList (sortType) {
-        let cardsArray = Array.from(this.m_cards);
-        if (sortType === 'Asc') {
-            cardsArray.sort((a, b) => a.getPoint() - b.getPoint());
-            } else if (sortType === 'Desc') {
-            cardsArray.sort((a, b) => b.getPoint() - a.getPoint());
-            }
-        return cardsArray;
-    };
-
-   /*// 测试函数，打印所有卡牌信息
-    printAllCardInfo() {
-        this.m_cards.forEach(card => {
-            console.log(`Suit: ${card.getSuit()}, Rank: ${card.getPoint()}`);
-        });
-    };*/
 }
+Card.prototype.getSuitName = function(suit) {
+    switch (suit) {
+        case 1:
+            return '1'; // 菱形
+        case 2:
+            return '2'; // 梅花
+        case 3:
+            return '3'; // 红心
+        case 4:
+            return '4'; // 黑桃
+        case 5:
+            return '5'; // 鬼
+        default:
+            return ''; // Handle unexpected values gracefully
+    }
+}
+//判断牌的类型
+function jugdeType(list){
+    sortDeck(list);
+    let len=list.length;//card的集合
 
-//牌的类型
-class PlayHand{
-    constructor(cards) {
-        this.cards=cards;
+    //判断 单排 对子 三带 炸弹
+    if(len<=4){
+        if (len > 0 && getPoint(list[0]) === getPoint(list[len - 1])) {
+        switch(len){
+        case 1:return CardType.Single;//单排
+        case 2:return CardType.Pair;//对子
+        case 3:return CardType.Triple;//三不带
+        case 4:return CardType.Bomb;   }//炸弹
         }
-    toCardList(sortType){//将卡牌转换为数组，并排序
-        let sortedCards = this.cards.toCardList(sortType);
-        return sortedCards;
-    }
-
-    judgeCardType(){
-        let cardArray=this.toCardList(sortType.NoSort)//
-        cardArray.sort((a,b)=>a.getPoint()-b.getPoint());
-
-        const cardCount=cardArray.length;//记录长度
-
-        switch (cardCount) {
-                case 1:
-                    {console.log(`cardtype:Single `)
-                    return CardType.Single;} // 单排}
-                case 2:
-                    if (this.isPair(cardArray))
-                    return CardType.Pair; //对子
-                    break;
-                case 3:
-                    if (this.isTriple(cardArray))
-                    return CardType.Triple; // 三张
-                    break;
-                case 4:
-                    if (this.isBomb(cardArray))
-                            return CardType.Bomb; // 炸弹
-                    if (this.isTripleWithSingle(cardArray))
-                            return CardType.TripleWithSingle; // 三带一
-                    if (this.isPlane(cardArray))
-                            return CardType.Plane; // 飞机
-                            break;
-                default:
-                    if (this.isStraight(cardArray))
-                            return CardType.Straight; // 顺子
-                    if (this.isStraightWithPair(cardArray))
-                            return CardType.StraightWithPair; // 连队
-                    if (this.isPlaneWithTwoSingle(cardArray))
-                            return CardType.PlaneWithTwoSingle; // 飞机带两张单排
-                    if (this.isPlaneWithTwoPair(cardArray))
-                            return CardType.PlaneWithTwoPair; // 飞机带两对
-                        break;
-                }
-        return CardType.Unknown;
-    }
-    isPair(cards) {
-            return cards.length === 2 && cards[0].getPoint() === cards[1].getPoint();
-    }
-
-    isTriple(cards) {
-            return cards.length === 3 && cards[0].getPoint() === cards[1].getPoint() && cards[1].getPoint() === cards[2].getPoint();
-    }
-
-    isBomb(cards) {
-            return cards.length === 4 && cards[0].getPoint() === cards[1].getPoint() && cards[1].getPoint() === cards[2].getPoint() && cards[2].getPoint() === cards[3].getPoint();
-    }
-
-    isTripleWithSingle(cards) {
-            if (cards.length !== 4) return false;
-            let pointCounts = this.countPoints(cards);
-            return pointCounts.length === 2 && pointCounts[0].count === 3 && pointCounts[1].count === 1;
-    }
-
-    isPlane(cards) {
-            if (cards.length < 6 || cards.length % 3 !== 0) return false;
-            let pointCounts = this.countPoints(cards);
-            return pointCounts.every(count => count.count === 3);
-    }
-
-    isStraight(cards) {
-            if (cards.length < 5) return false;
-            for (let i = 1; i < cards.length; i++) {
-                if (cards[i].getPoint() !== cards[i - 1].getPoint() + 1) {
-                    return false;
-                }
-            }
-            return true;
-    }
-
-    isStraightWithPair(cards) {
-            if (cards.length < 6 || cards.length % 2 !== 0) return false;
-            let sortedCards = cards.slice().sort((a, b) => a.getPoint() - b.getPoint());
-            for (let i = 0; i < sortedCards.length - 1; i += 2) {
-                if (sortedCards[i].getPoint() !== sortedCards[i + 1].getPoint() || (i > 0 && sortedCards[i].getPoint() !== sortedCards[i - 1].getPoint() + 1)) {
-                    return false;
-                }
-            }
-            return true;
-    }
-
-    isPlaneWithTwoSingle(cards) {
-            if (cards.length < 8 || cards.length % 4 !== 0) return false;
-            let pointCounts = this.countPoints(cards);
-            let tripleCount = 0;
-            let singleCount = 0;
-            for (let count of pointCounts) {
-                if (count.count === 3) tripleCount++;
-                else if (count.count === 1) singleCount++;
-                else return false;
-            }
-            return tripleCount * 3 === cards.length && singleCount === tripleCount * 2;
-    }
-
-    isPlaneWithTwoPair(cards) {
-            if (cards.length < 10 || cards.length % 5 !== 0) return false;
-            let pointCounts = this.countPoints(cards);
-            let tripleCount = 0;
-            let pairCount = 0;
-            for (let count of pointCounts) {
-                if (count.count === 3) tripleCount++;
-                else if (count.count === 2) pairCount++;
-                else return false;
-            }
-            return tripleCount * 3 === cards.length && pairCount === tripleCount * 2;
-    }
-    //统计一组 cards 中每个point出现的次数，并返回这些点数以及对应的出现次数的数组。按照出现次数从高到低排序结果
-    countPoints(cards) {
-            let pointCounts = [];
-            cards.forEach(card => {
-                let existingCount = pointCounts.find(count => count.point === card.getPoint());
-                if (existingCount) {
-                    existingCount.count++;
+        //双王,炸弹
+        if(len === 2 && getSuit(list[1]) === 5 && getSuit(list[0]) === 5)
+                return CardType.Jokers;//wangzha
+        //3带1
+        if (len === 4 && ((getPoint(list[0]) === getPoint(list[len - 2])) ||
+                getPoint(list[1]) === getPoint(list[len - 1]))) {
+                    return CardType.TripleWithSingle;
                 } else {
-                    pointCounts.push({ point: card.getPoint(), count: 1 });
+                    return CardType.Unknown;
                 }
-            });
-            return pointCounts.sort((a, b) => b.count - a.count); // Sort by count descending
     }
+    //获取相同的牌的次数
+    let card_index = { a: [[], [], [], []] };
+    getMax(card_index, list);//获取最大牌
+    ////当5张以上时，连字，3带2，飞机，2顺，4带2
+    if(len>=5){
+        //3带2
+        if (card_index.a[2].length === 1 && card_index.a[1].length === 1 && len === 5) {
+                    return CardType.TripleWithPair;
+        }
+        //4带2(单/双)
+        if (card_index.a[3].length === 1 && len === 6) {
+                    return CardType.BombWithTow;
+        }
+        //4带2对
+        if (card_index.a[3].length === 1 && card_index.a[1].length === 2 && len === 8) {
+                    return CardType.BombWithTwoPair;
+        }
+          //顺子 保证没有王 小王point：16
+        if (getSuit(list[0]) !== 5 && card_index.a[0].length === len &&
+                    (getPoint(list[0]) - getPoint(list[len - 1]) === len - 1)) {
+                    return CardType.Straight;
+        }
+      //连对
+        if (card_index.a[1].length === len / 2 && len % 2 === 0 && len / 2 >= 3 &&
+                    (getPoint(list[0]) - getPoint(list[len - 1]) === (len / 2 - 1))) {
+                    return CardType.StraightWithPair;
+        }
+           //飞机
+        if (card_index.a[2].length === len / 3 && (len % 3 === 0) &&
+                    (getPoint(list[0]) - getPoint(list[len - 1]) === (len / 3 - 1))) {
+                    return CardType.Plane;
+        }
+       //飞机带n单
+        if (card_index.a[2].length === len / 4 &&
+                    ((card_index.a[2][len / 4 - 1] - card_index.a[2][0]) === (len / 4 - 1))) {
+                    return CardType.PlaneWithTwo;
+        }
+         //飞机带n双
+        if (card_index.a[2].length === len / 5 && card_index.a[2].length === len / 5 &&
+                    ((card_index.a[2][len / 5 - 1] - card_index.a[2][0]) === (len / 5 - 1))) {
+                    return CardType.PlaneWithTwoPair;
+        }
+    }
+    return CardType.Unknown;
 
 }
+// 排序函数
+function sortDeck(cards) {
+    cards.sort((a, b) => b.point - a.point); // 按牌点数从大到小排序
+}
+function getPoint(card){
+    return card.point;
+}
+function getSuit(card){
+    return card.suit;
+}
+function getMax(card_index, list) {
+    let frequencyMap = new Map();
 
-module.exports = {
-  Card,
-  CardSuit,
-  CardPoint,
-  Cards,
-  sortType,
-  PlayHand
+        // 计算频率
+        for (const card of list) {
+            let point = getPoint(card) - 3; // 牌的牌值都是从3开始
+            if (frequencyMap.has(point)) {
+                frequencyMap.set(point, frequencyMap.get(point) + 1);
+            } else {
+                frequencyMap.set(point, 1);
+            }
+        }
+
+        // 将数据放入 card_index
+        frequencyMap.forEach((count, value) => {
+            if (count >= 1 && count <= 4) {
+                card_index.a[count - 1].push(value);
+            }
+        });
+}
+//查看地主牌权值，判断是否抢地主 查看2||鬼的个数
+function getScore(list){
+    let count=0;
+    for(let i=0,len=list.length;i<len;i++){
+        let card=list[i];
+        if(getSuit(card)===5)//王炸
+            count+=5;
+        if(getPoint(card)===15)//2
+            count+=5;
+    }
+    return count;
+}
+//model
+let Model={
+       value: 0,// 权值
+        num: 0,// 手数
+        a1: [], // 单张
+        a2: [],// 对子
+        a3: [], // 3带
+        a123: [],// 连子
+        a112233: [], // 连牌
+        a111222: [], // 飞机
+        a4: [] // 炸弹
 };
+//拆牌  将手中的牌按照一定的规则或策略分成不同的组合
+function getModel(list){
+    // 先复制一个列表
+    let list2 = list.slice();
+
+    let model = new Model();//创建模型
+    //先拆炸弹
+    Common.getBoomb(list2, model);
+    // 拆3带
+    Common.getThree(list2, model);
+    // 拆飞机
+    Common.getPlane(list2, model);
+    // 拆对子
+    Common.getTwo(list2, model);
+    // 拆连队
+    Common.getTwoTwo(list2, model);
+    // 拆顺子
+    Common.get123(list2, model);
+    // 拆单
+    Common.getSingle(list2, model);
+        return model;
+}
+const Common={
+       // 拆炸弹
+       getBoomb: function(list, model) {
+           let del = []; // 要删除的Cards
+
+               // 王炸
+               if (list.length >= 2 && list[0].color === 5 && list[1].color === 5) {
+                   model.a4.push(list[0].name + "," + list[1].name); // 按名字加入
+                   del.push(list[0], list[1]);
+               }
+
+               // 如果王不构成炸弹则拆单
+               if (list.length >= 2 && list[0].color === 5 && list[1].color !== 5) {
+                   del.push(list[0]);
+                   model.a1.push(list[0].name);
+               }
+
+               // 一般的炸弹
+               for (let i = 0, len = list.length; i < len; i++) {
+                   if (i + 3 < len && list[i].value === list[i + 3].value) {
+                       let s = list[i].name + ",";
+                       s += list[i + 1].name + ",";
+                       s += list[i + 2].name + ",";
+                       s += list[i + 3].name;
+                       model.a4.push(s);
+                       del.push(list[i], list[i + 1], list[i + 2], list[i + 3]);
+                       i = i + 3;
+                   }
+               }
+
+               // 从 list 中移除所有的 del
+               list = list.filter(item => !del.includes(item));
+       },
+
+       // 拆3带
+       getThree: function(list, model) {
+           let del = []; // 要删除的Cards
+
+               // 连续3张相同
+               for (let i = 0, len = list.length; i < len; i++) {
+                   if (i + 2 < len && list[i].value === list[i + 2].value) {
+                       let s = list[i].name + ",";
+                       s += list[i + 1].name + ",";
+                       s += list[i + 2].name;
+                       model.a3.push(s);
+                       for (let j = i; j <= i + 2; j++) {
+                           del.push(list[j]);
+                       }
+                       i = i + 2;
+                   }
+               }
+
+               // 从 list 中移除所有的 del
+               list = list.filter(item => !del.includes(item));
+       },
+       // 拆飞机
+       getPlane: function(list, model) {
+           let del = []; // 要删除的Cards
+
+               // 从 model 的3带中查找
+               let l = model.a3;
+               if (l.length < 2) {
+                   return;
+               }
+               let s = l.map(item => parseInt(item.split(",")[0].substring(2)));
+
+               for (let i = 0, len = l.length; i < len; i++) {
+                   let k = i;
+                   for (let j = i; j < len; j++) {
+                       if (s[i] - s[j] === j - i) {
+                           k = j;
+                       }
+                   }
+                   if (k !== i) {
+                       //  i 到 k 是飞机
+                       let ss = "";
+                       for (let j = i; j <= k; j++) {
+                           ss += l[j] + ",";
+                           del.push(l[j]);
+                       }
+                       model.a111222.push(ss.slice(0, -1)); // 去除最后一个逗号并添加到 a111222 中
+                       i = k;
+                   }
+               }
+
+               // 从 l 中移除所有的 del
+               del.forEach(item => {
+                   let index = l.indexOf(item);
+                   if (index !== -1) {
+                       l.splice(index, 1);
+                   }
+               });
+       },
+       // 拆对子
+       getTwo: function(list, model) {
+           let del = []; // 要删除的Cards
+       for (let i = 0, len = list.length - 1; i < len; i++) {
+           if (list[i].name === list[i + 1].name) {
+                       model.a2.push([list[i].name, list[i + 1].name]); // 使用数组来存放对子牌
+                       del.push(list[i]);
+                       del.push(list[i + 1]);
+                       i++; // 跳过下一张牌，因为已经处理了一对
+                   }
+               }
+               // 从 list 中移除所有的 del
+               list = list.filter(item => !del.includes(item));
+       },
+       // 拆连队
+       getTwoTwo: function(list, model) {
+           let del = []; // 要删除的Cards
+
+               // 从 model 的对子中查找
+               let l = model.a2;
+               if (l.length < 4) {
+                   return;
+               }
+               let s = l.map(item => parseInt(item.split(",")[0].substring(2)));
+               for (let i = 0, len = l.length; i < len; i++) {
+                   let k = i;
+                   for (let j = i; j < len; j++) {
+                       if (s[i] - s[j] === j - i) {
+                           k = j;
+                       }
+                   }
+                   if (k - i >= 3) {
+                       // 说明从 i 到 k 是连队
+                       let ss = "";
+                       for (let j = i; j <= k; j++) {
+                           ss += l[j] + ",";
+                           del.push(l[j]);
+                       }
+                       model.a112233.push(ss.slice(0, -1)); // 去除最后一个逗号并添加到 a112233 中
+                       i = k;
+                   }
+               }
+
+               model.a2 = l.filter(item => !del.includes(item));
+       },
+       // 拆顺子
+       get123: function(list, model) {
+           let del = []; // 要删除的Cards
+           //第一张牌的值小于 7 或者最后一张牌的值大于 10
+           if (list.length > 0 && (getPoint(list[0]) < 7 || getPoint(list[list.length - 1]) > 10)) {
+                   return;
+            }
+            if (list.length < 5) {
+                   return;
+            }
+            for (let i = 0, len = list.length; i < len; i++) {
+                let k = i;
+                for (let j = i; j < len; j++) {
+                  if (getPoint(list[i]) - getPoint(list[j]) === j - i) {
+                           k = j;}}
+                   if (k - i >= 4) {
+                       let s = "";
+                       for (let j = i; j <= k; j++) {
+                           s += list[j].name + ",";//构建顺子的名称字符串
+                           del.push(list[j]);
+                       }
+                       model.a123.push(s.slice(0, -1)); // 去掉末尾的逗号
+                       i = k;
+                   }
+               }
+               // 从原始列表中删除已提取的牌
+               for (let card of del) {
+                   let index = list.indexOf(card);
+                   if (index !== -1) {
+                       list.splice(index, 1);
+                   }
+               }
+       },
+       // 拆单
+       getSingle: function(list, model) {
+           /*let del = []; // 要删除的Cards
+
+               // 单张牌
+               for (let i = 0, len = list.length; i < len; i++) {
+                   model.a1.push(list[i].name);
+                   del.push(list[i]);
+               }
+
+               // 从 list 中移除所有的 del
+               list = list.filter(item => !del.includes(item));*/
+           let singles = [];
+               let countMap = {};
+
+               // 统计每张牌出现的次数
+               list.forEach(card => {
+                   let name = card.name;
+                   if (countMap[name]) {
+                       countMap[name]++;
+                   } else {
+                       countMap[name] = 1;
+                   }
+               });
+
+               // 找出只出现一次的牌
+               list.forEach(card => {
+                   let name = card.name;
+                   if (countMap[name] === 1) {
+                       singles.push(name);
+                   }
+               });
+
+               // 更新 model.a1
+               singles.forEach(name => model.a1.push(name));
+
+               // 从原始列表中移除所有单牌
+               list = list.filter(card => countMap[card.name] !== 1);
+
+               return list; // 返回更新后的列表，不再包含单牌
+       }
+}
+
+//测试牌型
+function test(){
+    // 测试用例
+    let testCases = [
+        // 单张牌
+        //[new Card(3, 1)],
+
+        // 对子
+        //[new Card(2, 2), new Card(2, 4)],
+
+        // 三张牌
+        //[new Card(5, 3), new Card(5, 4), new Card(5, 1)],
+        //三带一
+        //[new Card(5, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1)],
+        //三带对
+        //[new Card(5, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
+
+        // 四张牌
+        //[new Card(1, 2), new Card(1, 4), new Card(1, 3), new Card(1, 1)],
+
+        // 炸弹
+        //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4)],
+
+        // 顺子  被检测为三带一对
+        //[new Card(1, 3), new Card(2, 4), new Card(3, 1), new Card(4, 2), new Card(5, 3)],
+        // 连队
+        //[new Card(1, 3), new Card(1, 4), new Card(2, 1), new Card(2, 2), new Card(3, 3), new Card(3, 4)],
+        //飞机不带
+        //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3)],
+        //飞机带两对  为检测
+        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
+        //飞机带两单  未检查到
+        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 1), new Card(4, 1)],
+        //炸弹带两单  为检测到
+        [new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2)],
+        //炸弹带一对
+        //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2), new Card(4, 3)],
+        // 王炸
+        //[new Card(16, 5), new Card(17, 5)],
+
+        ];
+
+    testCases.forEach(function(cards) {
+        let result = jugdeType(cards);
+        console.log(`牌型为${result}`);
+    });
+
+    //name
+    let aceOfDiamonds = new Card(1, 1); // Ace of Diamonds (菱形)
+    console.log(aceOfDiamonds.name); // Outputs: '1-1.png'
+
+    let kingOfHearts = new Card(13, 3); // King of Hearts (红心)
+    console.log(kingOfHearts.name); // Outputs: '3-K.png'
+
+    let joker = new Card(1, 5); // Joker (鬼)
+    console.log(joker.name);
+
+    let list = [
+        { name: 'A' },
+        { name: '2' },
+        { name: '3' },
+        { name: '3' },
+        { name: '4' },
+        { name: '4' },
+        { name: '4' },
+        { name: '5' },
+        { name: '6' },
+        { name: '6' },
+        { name: '7' },
+        { name: '8' },
+        { name: '8' },
+        { name: '9' },
+        { name: '9' }
+    ];
+    //let model = { a1: [] };
+    /*let model = {
+        a1: [], // 存放单牌的数组
+        a2: []  // 存放对子牌的数组
+    };*/
+    /*console.log("Before getTwo:", list);
+    Common.getTwo(list, model);
+    console.log("Pairs:", model.a2);*/
+    let model={
+           //value: 0,// 权值
+            //num: 0,// 手数
+            a1: [], // 单张
+            a2: [],// 对子
+            a3: [], // 3带
+            a123: [],// 连子
+            a112233: [], // 连牌
+            a111222: [], // 飞机
+            a4: [] // 炸弹
+    };
+
+    //model
+    console.log("Before:", list);
+    /*Common.getSingle(list, model);
+    console.log("Single cards:", model.a1);*/
+
+    /*Common.getThree(list, model);
+    console.log("getthree:",model.a3);
+
+    Common.getBoomb(list, model);
+    console.log("getBoomb",model.a4);
+
+    Common.getTwo(list, model);
+    console.log("Pairs:", model.a2);
+
+    Common.get123(list, model);
+    console.log("get123:",model.a123);
+
+    Common.getTwoTwo(list, model);
+    console.log("gettwotwo:",model.a112233);
+
+    Common.getPlane(list, model);
+    console.log("getplane",model.a111222);*/
+
+}
+test();
+//module.exports = {
+  //Card,
+  //CardSuit
+//};

@@ -24,17 +24,13 @@ qt_add_qml_module(
   Dialogs.qml
   CardsPrepare.qml
   game.js
+  card.js
   SOURCES
   RESOURCES
   resources.qrc
   QML_FILES
-  cardtype.cpp
-  QML_FILES
   Music.qml
-  QML_FILES
-  SOURCES
-  playcontrol.h
-  playcontrol.cpp)
+  QML_FILES)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 

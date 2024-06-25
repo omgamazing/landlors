@@ -295,10 +295,6 @@ ApplicationWindow {
             }
     }
 
-
-
-
-
     RowLayout {
             id: landlorsDecks_location
             visible: false
@@ -314,5 +310,53 @@ ApplicationWindow {
             }
         }
 
+    //卡牌从一个点移动到另一个点 移动效果的函数,用于发牌
+    Item {
+        property alias card: cardItem // 将内部的Card对象暴露给外部访问
+
+        Rectangle {
+            id: cardItem
+            width: 50
+            height: 80
+            color: "red" // 红色矩形，模拟卡牌
+
+            function move(from, to, duration) {
+                var animation = Qt.createQmlObject('import QtQuick 2.0; SequentialAnimation { \
+                                PropertyAnimation { target: cardItem; property: "x"; from: ' + from.x + '; to: ' + to.x + '; duration: ' + duration + ' } \
+                                PropertyAnimation { target: cardItem; property: "y"; from: ' + from.y + '; to: ' + to.y + '; duration: ' + duration + ' } \
+                            }', cardItem, "dynamicAnimation");
+
+                animation.start();
+            }
+
+            function rePosition(container, cardList, flag) {
+                var p = { x: 0, y: 0 };
+                var spacingX = 21;
+                var spacingY = 15;
+
+                if (flag === 0) {
+                    p.x = 50;
+                    p.y = (450 / 2) - (cardList.length + 1) * spacingY / 2;
+                } else if (flag === 1) {
+                    p.x = (800 / 2) - (cardList.length + 1) * spacingX / 2;
+                    p.y = 450;
+                } else if (flag === 2) {
+                    p.x = 700;
+                    p.y = (450 / 2) - (cardList.length + 1) * spacingY / 2;
+                }
+
+                for (var i = 0; i < cardList.length; i++) {
+                    var card = cardList[i];
+                    move(card, { x: card.x, y: card.y }, p, 10);
+                    container.setZ(i, card);
+                    if (flag === 1) {
+                        p.x += spacingX;
+                    } else {
+                        p.y += spacingY;
+                    }
+                }
+            }
+        }
+    }
 
 }

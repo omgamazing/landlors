@@ -106,8 +106,6 @@ _rcall.visible = true;
 
 }
 
-
-
 //叫地主
 function call(){
     _callButtonImage.visible=false
@@ -119,16 +117,15 @@ function call(){
     landlorsDecks_location.visible=true
 }
 
+var suits = ["♠️", "♥️", "🔷", "♣️"]
 // 初始化牌堆：生成一副包括 A-K 的四种花色和大小王的54张牌
 function initializeDeck() {
-    var suits = ["♠️", "♥️", "🔷", "♣️"]
     for (var s = 0; s < suits.length; ++s) {
         for (var r = 3; r <= 15; ++r) {
             var card={suit:suits[s],rank:r}
             decks.push(card)
         }
     }
-
     // 添加大小王
     decks.push({ suit:"🤡", rank: 16 }); // 小王
     decks.push({ suit:"🤡", rank: 17 }); // 大王
