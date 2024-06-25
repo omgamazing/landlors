@@ -30,7 +30,13 @@ qt_add_qml_module(
   resources.qrc
   QML_FILES
   Music.qml
-  QML_FILES)
+  QML_FILES
+  SOURCES
+  SOURCES
+  QML_FILES
+  Model.qml
+  QML_FILES
+  PlayControl.qml)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 
