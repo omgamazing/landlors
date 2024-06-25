@@ -30,11 +30,14 @@ qt_add_qml_module(
   QML_FILES
   Music.qml
   QML_FILES
-  card.js
+
   QML_FILES
-  player.js
+
   QML_FILES
-  SOURCES playcontrol.h playcontrol.cpp)
+  SOURCES
+  SOURCES
+  QML_FILES Model.qml
+  QML_FILES PlayControl.qml )
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 
