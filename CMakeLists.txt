@@ -28,11 +28,9 @@ qt_add_qml_module(
   RESOURCES
   resources.qrc
   QML_FILES
+  cardtype.cpp
+  QML_FILES
   Music.qml
-  QML_FILES
-
-  QML_FILES
-
   QML_FILES
   SOURCES
   SOURCES
