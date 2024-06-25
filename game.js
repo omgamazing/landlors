@@ -85,7 +85,7 @@ function start(){
     _callButtonImage.visible = true;
     myDecks_location.visible=true
 
-}}
+}
 
 //不叫
 function notcall(){
@@ -103,12 +103,11 @@ function hide(){
 notcall.visible = false; // 定时器触发后隐藏图片按钮
  // 定时器触发后显示图片
 _rcall.visible = true;
-<<<<<<< HEAD
-}
-=======
-}*/
 
->>>>>>> 877fc5cd95b91d6fef9d38ee408534daa84b8f4f
+}
+
+
+
 //叫地主
 function call(){
     _callButtonImage.visible=false
