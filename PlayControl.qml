@@ -1,60 +1,52 @@
-// PlayControl.qml
-
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-Item {
-    property int currentPlayer: -1
-    property int dizhuFlag: -1
-    property int timeLeft: 10
+Rectangle {
+    width: 800
+    height: 600
+
+    property int countdown: 10
+    property bool running: true
+    property int turn: 1 // 默认从玩家开始
+
+    Text {
+        id: timerText
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: "倒计时: " + countdown
+        font.pixelSize: 24
+    }
+
+    function delay(ms) {
+        var date = new Date()
+        var curDate = null
+        do {
+            curDate = new Date()
+        } while (curDate - date < ms)
+    }
 
     Timer {
-        id: timer
+        id: gameTimer
         interval: 1000
-        running: false
+        running: running
         repeat: true
-        onTriggered: playControl.onTimeout()
-    }
 
-    function startGame() {
-        playControl.startGame();
-    }
-
-    function playerAction(isTakingLandlord) {
-        playControl.playerAction(isTakingLandlord);
-    }
-
-    function computerAction(player) {
-        playControl.computerAction(player);
-    }
-
-    function checkWinCondition() {
-        // Implement win condition checking logic
-        // playControl.checkWinCondition();
-    }
-
-  /*  PlayControl {
-        id: playControl
-        onUpdateTime: {
-            // Update UI or handle time updates
+        onTriggered: {
+            if (countdown > -1 && running) {
+                timerText.text = "倒计时: " + countdown--
+                // 其他逻辑...
+            } else {
+                // 倒计时结束处理
+                running = false
+                timerText.text = "不抢"
+                // 其他逻辑...
+            }
         }
-        onSetLandlord: {
-            // Handle landlord setting
-        }
-        onShowLandlordCards: {
-            // Handle showing landlord cards
-        }
-    }*/
-
-    // Example UI elements or logic binding
-    Text {
-        text: "Current Player: " + currentPlayer
     }
 
-    Button {
-        text: "Start Game"
-        onClicked: startGame()
+    Component.onCompleted: {
+        // 游戏开始初始化
+        gameTimer.start()
+        // 其他初始化逻辑...
     }
-
-    // Add more UI elements as needed
 }
