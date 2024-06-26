@@ -180,6 +180,56 @@ ApplicationWindow {
          }
 
      }
+     //按钮：出不出牌
+     RowLayout {
+         x:320
+         y: 420
+         spacing: 120
+
+         //nochu
+         Image{
+             //signal isclicked()
+             id: _notchuImage
+             visible: false
+             source:"qrc:/images/buyao1.png"
+             fillMode: Image.PreserveAspectFit
+
+             TapHandler {
+                 //cursorShape: Qt.PointingHandCursor
+                 onTapped: Controller.notchu()
+             }
+
+             HoverHandler{
+                  cursorShape: Qt.PointingHandCursor
+                  onHoveredChanged: {
+                      _notchuImage.source = hovered ? "qrc:/images/buyao2.png" : "qrc:/images/buyao1.png"
+                  }
+             }
+         }
+
+         //chu
+         Image{
+             signal isclicked()
+             id: _chuImage
+             visible: false
+             source:"qrc:/images/chupai1.png"
+             fillMode: Image.PreserveAspectFit
+             TapHandler {
+                 cursorShape: Qt.PointingHandCursor
+                 onTapped: {
+                     Controller.chu()
+                     }
+             }
+             HoverHandler{
+                  cursorShape: Qt.PointingHandCursor
+                  onHoveredChanged: {
+                      _chuImage.source = hovered ? "qrc:/images/chupai2.png" : "qrc:/images/chupai3.png"
+                  }
+             }
+
+         }
+
+     }
 
      //动画：叫地主
      Image{
