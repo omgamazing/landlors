@@ -361,7 +361,7 @@ ApplicationWindow {
         }
 
     //卡牌从一个点移动到另一个点 移动效果的函数,用于发牌
-    Item {
+    /*Item {
         property alias card: cardItem // 将内部的Card对象暴露给外部访问
 
         Rectangle {
@@ -369,7 +369,18 @@ ApplicationWindow {
             width: 50
             height: 80
             color: "red" // 红色矩形，模拟卡牌
+            //rePosition();
 
+            function createCard(x, y) {
+                            var cardItem = Qt.createQmlObject('import QtQuick 2.15; Rectangle { \
+                                                                    width: 50; \
+                                                                    height: 80; \
+                                                                    color: "red"; \
+                                                                }', cardContainer, "dynamicCard");
+                            cardItem.x = x;
+                            cardItem.y = y;
+                            return cardItem;
+                        }
             function move(from, to, duration) {
                 var animation = Qt.createQmlObject('import QtQuick 2.0; SequentialAnimation { \
                                 PropertyAnimation { target: cardItem; property: "x"; from: ' + from.x + '; to: ' + to.x + '; duration: ' + duration + ' } \
@@ -407,6 +418,6 @@ ApplicationWindow {
                 }
             }
         }
-    }
+    }*/
 
 }
