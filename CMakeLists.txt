@@ -28,14 +28,14 @@ qt_add_qml_module(
   RESOURCES
   resources.qrc
   QML_FILES
-  cardtype.cpp
-  QML_FILES
   Music.qml
   QML_FILES
   SOURCES
   SOURCES
-  QML_FILES Model.qml
-  QML_FILES PlayControl.qml )
+  QML_FILES
+  Model.qml
+  QML_FILES
+  PlayControl.qml)
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 
