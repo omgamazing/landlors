@@ -24,6 +24,7 @@ qt_add_qml_module(
   Dialogs.qml
   CardsPrepare.qml
   game.js
+  card.js
   SOURCES
   RESOURCES
   resources.qrc
