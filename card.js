@@ -1,12 +1,12 @@
 //创建card属性 point：牌面 suit：花色
 //花色 每一项有唯一的整数值
-const CardSuit={
+/*const CardSuit={
     Diamond:1,//菱形
     Club:2, //梅花
     Heart:3, //红心
     Spade:4,//黑桃
     Joker:5
-}
+}*/
 const CardType={
             Single:"Single", //单
             Pair: "Pair",   //对子
@@ -32,9 +32,11 @@ const CardType={
             Pass: "Pass"     //过
 }
 
-function Card(point,suit){
-    this.point=point;
-    this.suit=suit;
+function Card(){
+    this.name=name;
+
+    //this.point=point;
+    //this.suit=suit;
     //根据卡牌定义名字
     /*
     黑桃：1-1.png 到 1-13.png
@@ -44,7 +46,7 @@ function Card(point,suit){
     小王：5-1.png
     大王：5-2.png
 */
-    if (this.point >= 3 && this.point <= 10) {
+    /*if (this.point >= 3 && this.point <= 10) {
             this.name = `${this.getSuitName(this.suit)}-${this.point}.png`; //  3-10
         } else if (this.point === 1) {
             this.name = `${this.getSuitName(this.suit)}-1.png`; // A
@@ -55,10 +57,27 @@ function Card(point,suit){
         } else if (this.point === 13) {
             this.name = `${this.getSuitName(this.suit)}-K.png`; // K
         } else if (this.point === 14) {
-            this.name = `${this.getSuitName(this.suit)}-15.png`; // 鬼
-        }
+            this.name = `${this.getSuitName(this.suit)}-1.png`; // 鬼
+        }else if (this.point === 15) {
+        this.name = `${this.getSuitName(this.suit)}-2.png`; // 鬼
+    }*/
 }
-Card.prototype.getSuitName = function(suit) {
+//图片命名第一个就是卡牌的花色
+function getSuit(card) {
+    return parseInt(card.substring(0, 1));
+}
+//图片第二个命名就是卡牌的大小1-13：A-k 5-1：小王 5-2：大王
+function getPoint(card) {
+    let i = parseInt(card.substring(2));//2
+    if (card.name.substring(2) === "2")
+        i += 13;
+    if (card.name.substring(2)=== "1")//A
+        i += 13;
+    if (card.name.substring(0,1) === "5")
+        i += 2; // 是王
+    return i;
+}
+/*Card.prototype.getSuitName = function(suit) {
     switch (suit) {
         case 1:
             return '1'; // 菱形
@@ -71,12 +90,12 @@ Card.prototype.getSuitName = function(suit) {
         case 5:
             return '5'; // 鬼
         default:
-            return ''; // Handle unexpected values gracefully
+            return '';
     }
-}
+}*/
 //判断牌的类型
 function jugdeType(list){
-    sortDeck(list);
+    sortDeck(list);//排序
     let len=list.length;//card的集合
 
     //判断 单排 对子 三带 炸弹
@@ -101,7 +120,7 @@ function jugdeType(list){
     }
     //获取相同的牌的次数
     let card_index = { a: [[], [], [], []] };
-    getMax(card_index, list);//获取最大牌
+    getMax(card_index, list);//获取最大牌  a[0,1,2,3]分别表示重复1,2,3,4次的牌
     ////当5张以上时，连字，3带2，飞机，2顺，4带2
     if(len>=5){
         //3带2
@@ -147,20 +166,53 @@ function jugdeType(list){
 }
 // 排序函数
 function sortDeck(cards) {
-    cards.sort((a, b) => b.point - a.point); // 按牌点数从大到小排序
+    cards.sort((a, b) =>{
+               let pointA = getPoint(a); // 获取牌 A 的点数
+               let pointB = getPoint(b); // 获取牌 B 的点数); // 按牌点数从大到小排序
+               return pointB - pointA;
+                });
+             return cards;
 }
-function getPoint(card){
+/*function getPoint(card){
     return card.point;
 }
 function getSuit(card){
     return card.suit;
-}
+}*/
 function getMax(card_index, list) {
-    let frequencyMap = new Map();
 
+    let count = new Array(14).fill(0); // 创建一个长度为14的数组，初始值都为0
+        // 遍历牌列表，统计每种牌的数量
+        for (let i = 0; i < list.length; i++) {
+            if (getSuit(list[i]) === 5) {
+                count[13]++; // 王的颜色为5，对应数组的最后一个元素
+            } else {
+                count[getSuit(list[i]) - 1]++; // 其他牌按值放置在数组中
+            }
+        }
+
+        // 根据统计结果将各类牌分别添加到 card_index.a 数组中的不同位置
+        for (let i = 0; i < 14; i++) {
+            switch (count[i]) {
+                case 1:
+                    card_index.a[0].push(i + 1);
+                    break;
+                case 2:
+                    card_index.a[1].push(i + 1);
+                    break;
+                case 3:
+                    card_index.a[2].push(i + 1);
+                    break;
+                case 4:
+                    card_index.a[3].push(i + 1);
+                    break;
+            }
+        }
+
+    //let frequencyMap = new Map();
         // 计算频率
-        for (const card of list) {
-            let point = getPoint(card) - 3; // 牌的牌值都是从3开始
+        /*for (const card of list) {
+            let point = getPoint(card); // 牌的牌值都是从A开始
             if (frequencyMap.has(point)) {
                 frequencyMap.set(point, frequencyMap.get(point) + 1);
             } else {
@@ -173,16 +225,16 @@ function getMax(card_index, list) {
             if (count >= 1 && count <= 4) {
                 card_index.a[count - 1].push(value);
             }
-        });
+        });*/
 }
 //查看地主牌权值，判断是否抢地主 查看2||鬼的个数
 function getScore(list){
     let count=0;
     for(let i=0,len=list.length;i<len;i++){
         let card=list[i];
-        if(getSuit(card)===5)//王炸
+        if(card.name.substring(0, 1)==="5")//王炸 获取牌面名字
             count+=5;
-        if(getPoint(card)===15)//2
+        if(card.name.substring(2)==="2")//2
             count+=5;
     }
     return count;
@@ -227,13 +279,13 @@ const Common={
            let del = []; // 要删除的Cards
 
                // 王炸
-               if (list.length >= 2 && list[0].color === 5 && list[1].color === 5) {
+               if (list.length >= 2 && getSuit(list[0]) === 5 && getSuit(list[1]) === 5) {
                    model.a4.push(list[0].name + "," + list[1].name); // 按名字加入
                    del.push(list[0], list[1]);
                }
 
                // 如果王不构成炸弹则拆单
-               if (list.length >= 2 && list[0].color === 5 && list[1].color !== 5) {
+               if (list.length >= 2 && getSuit(list[0]) === 5 && getSuit(list[1]) !== 5) {
                    del.push(list[0]);
                    model.a1.push(list[0].name);
                }
@@ -434,11 +486,89 @@ const Common={
                return list; // 返回更新后的列表，不再包含单牌
        }
 }
+//隐藏牌
+function hideCards(list) {
+    for (let i = 0, len = list.length; i < len; i++) {
+        list[i].setVisible(false);
+    }
+}
+//检查当前的牌是否能出
+function checkCards(c,current){
+    let currentlist = (current[0].length > 0) ? current[0] : current[2];
+        let cType = jugdeType(c);
 
+        if (cType !== CardType.Bomb && c.length !== currentlist.length) {
+            return 0;
+        }
+
+        if (jugdeType(c) !== jugdeType(currentlist)) {
+            return 0;
+        }
+        //王炸弹
+        if (cType === CardType.Bomb) {
+            if (c.length === 2)
+                return 1;
+            if (currentlist.length === 2)
+                return 0;
+        }
+        //单牌对子三带炸弹
+        if (cType === CardType.Single || cType === CardType.Pair || cType === CardType.Triple || cType === CardType.Bomb) {
+            if (getPoint(c[0]) <= getPoint(currentlist[0])) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+        //连队顺子飞机
+        if (cType === CardType.Straight || cType === CardType.StraightWithPair || cType === CardType.Plane) {
+            if (getPoint(c[0]) <= getPoint(currentlist[0])) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
+         //按照重复次数排序
+        if (cType === CardType.TripleWithSingle || cType === CardType.TripleWithPair || cType === CardType.BombWithTow || cType === CardType.BombWithTowPair
+            || cType === CardType.PlaneWithTwo || cType === CardType.PlaneWithTwoPair) {
+            let a1 = getOrder2(c);//我的牌
+            let a2 = getOrder2(currentlist);//当前最大牌
+            if (getPoint(a1[0]) < getPoint(a2[0])) {
+                return 0;
+            }
+        }
+}
+//按照重复次数给卡牌排序
+function getOrder2(list) {
+    let list2 = [...list]; // 复制列表
+    let list3 = [];
+    let a = new Array(20).fill(0); // 初始化计数数组
+
+    list2.forEach(card => {
+        a[getPoint(card)]++;
+    });
+
+    for (let i = 0; i < 20; i++) {
+        let max = 0;
+        for (let j = 19; j >= 0; j--) {
+            if (a[j] > a[max])
+                max = j;
+        }
+
+        list2.forEach(card => {
+            if (getPoint(card) === max) {
+                list3.push(card);
+            }
+        });
+        // 移除已处理的元素
+        list2 = list2.filter(card => getPoint(card) !== max);
+        a[max] = 0;
+    }
+    return list3;
+}
 //测试牌型
 function test(){
     // 测试用例
-    let testCases = [
+    //let testCases = [
         // 单张牌
         //[new Card(3, 1)],
 
@@ -465,34 +595,37 @@ function test(){
         //飞机不带
         //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3)],
         //飞机带两对  为检测
-        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
+        //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
         //飞机带两单  未检查到
-        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 1), new Card(4, 1)],
+        //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 1), new Card(4, 1)],
         //炸弹带两单  为检测到
-        [new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2)],
+        //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2)],
         //炸弹带一对
         //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2), new Card(4, 3)],
         // 王炸
         //[new Card(16, 5), new Card(17, 5)],
+      //];
 
-        ];
-
-    testCases.forEach(function(cards) {
-        let result = jugdeType(cards);
-        console.log(`牌型为${result}`);
-    });
+    //testCases.forEach(function(cards) {
+        //let result = jugdeType(cards);
+        //console.log(`牌型为${result}`);
+    //});
 
     //name
-    let aceOfDiamonds = new Card(1, 1); // Ace of Diamonds (菱形)
+    /*let aceOfDiamonds = new Card(1, 1); // Ace of Diamonds (菱形)
     console.log(aceOfDiamonds.name); // Outputs: '1-1.png'
 
     let kingOfHearts = new Card(13, 3); // King of Hearts (红心)
     console.log(kingOfHearts.name); // Outputs: '3-K.png'
 
-    let joker = new Card(1, 5); // Joker (鬼)
-    console.log(joker.name);
+    let joker1 = new Card(14, 5); // 小王
+    console.log(joker1.name); // 输出: '5-15.png'
 
-    let list = [
+    let joker2 = new Card(15, 5); // 大王
+    console.log(joker2.name); // 输出: '5-16.png'
+*/
+
+    /*let list = [
         { name: 'A' },
         { name: '2' },
         { name: '3' },
@@ -508,7 +641,7 @@ function test(){
         { name: '8' },
         { name: '9' },
         { name: '9' }
-    ];
+    ];*/
     //let model = { a1: [] };
     /*let model = {
         a1: [], // 存放单牌的数组
@@ -517,7 +650,7 @@ function test(){
     /*console.log("Before getTwo:", list);
     Common.getTwo(list, model);
     console.log("Pairs:", model.a2);*/
-    let model={
+    /*let model={
            //value: 0,// 权值
             //num: 0,// 手数
             a1: [], // 单张
@@ -527,10 +660,10 @@ function test(){
             a112233: [], // 连牌
             a111222: [], // 飞机
             a4: [] // 炸弹
-    };
+    };*/
 
     //model
-    console.log("Before:", list);
+    //console.log("Before:", list);
     /*Common.getSingle(list, model);
     console.log("Single cards:", model.a1);*/
 
