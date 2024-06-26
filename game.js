@@ -95,6 +95,8 @@ function notcall(){
     console.log("player notcall")
     hidecallTimer.start();
     landlorsDecks_location.visible=true
+    _notchuImage.visible=true
+    _chuImage.visible=true
 
 
 }
@@ -115,6 +117,15 @@ function call(){
     console.log("player call")
     myhidecallTimer.start();
     landlorsDecks_location.visible=true
+    _notchuImage.visible=true
+    _chuImage.visible=true
+}
+function notchu(){
+    _notchuImage.visible=false
+    _chuImage.visible=false
+
+}
+function chu(){
 }
 
 var suits = ["♠️", "♥️", "🔷", "♣️"]
