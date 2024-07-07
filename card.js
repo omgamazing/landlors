@@ -7,6 +7,323 @@
     Spade:4,//黑桃
     Joker:5
 }*/
+/*//图片命名第一个就是卡牌的花色
+function getSuit(card) {
+    return parseInt(card.substring(0, 1));
+}*/
+//图片第二个命名就是卡牌的大小1-13：A-k 5-1：小王 5-2：大王
+/*function getPoint(card) {
+    let i = parseInt(card.substring(2));//2
+    if (card.name.substring(2) === "2")
+        i += 13;
+    if (card.name.substring(2)=== "1")//A
+        i += 13;
+    if (card.name.substring(0,1) === "5")
+        i += 2; // 是王
+    return i;
+}*/
+function getSuitName(suit) {
+    switch (suit) {
+        case 1:
+            return '1'; // 菱形
+        case 2:
+            return '2'; // 梅花
+        case 3:
+            return '3'; // 红心
+        case 4:
+            return '4'; // 黑桃
+        case 5:
+            return '5'; // 鬼
+        default:
+            return '';
+    }
+}
+//简单粗暴的将所有牌举例出来，以免混乱
+let all = [
+    {
+        suit: '👻',
+        pname: '大王',
+        rank: 15
+    },
+    {
+        suit: '👻',
+        pname: '小王',
+        rank: 14
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '2',
+        rank: 13
+    },
+    {
+        suit: '♥',
+        pname: '2',
+        rank: 13
+    },
+    {
+        suit: '♣',
+        pname: '2',
+        rank: 13
+    },
+    {
+        suit: '♦',
+        pname: '2',
+        rank: 13
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: 'A',
+        rank: 12
+    },
+    {
+        suit: '♥',
+        pname: 'A',
+        rank: 12
+    },
+    {
+        suit: '♣',
+        pname: 'A',
+        rank: 12
+    },
+    {
+        suit: '♦',
+        pname: 'A',
+        rank: 12
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: 'K',
+        rank: 11
+    },
+    {
+        suit: '♥',
+        pname: 'K',
+        rank: 11
+    },
+    {
+        suit: '♣',
+        pname: 'K',
+        rank: 11
+    },
+    {
+        suit: '♦',
+        pname: 'K',
+        rank: 11
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: 'Q',
+        rank: 10
+    },
+    {
+        suit: '♥',
+        pname: 'Q',
+        rank: 10
+    },
+    {
+        suit: '♣',
+        pname: 'Q',
+        rank: 10
+    },
+    {
+        suit: '♦',
+        pname: 'Q',
+        rank: 10
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: 'J',
+        rank: 9
+    },
+    {
+        suit: '♥',
+        pname: 'J',
+        rank: 9
+    },
+    {
+        suit: '♣',
+        pname: 'J',
+        rank: 9
+    },
+    {
+        suit: '♦',
+        pname: 'J',
+        rank: 9
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '10',
+        rank: 8
+    },
+    {
+        suit: '♥',
+        pname: '10',
+        rank: 8
+    },
+    {
+        suit: '♣',
+        pname: '10',
+        rank: 8
+    },
+    {
+        suit: '♦',
+        pname: '10',
+        rank: 8
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '9',
+        rank: 7
+    },
+    {
+        suit: '♥',
+        pname: '9',
+        rank: 7
+    },
+    {
+        suit: '♣',
+        pname: '9',
+        rank: 7
+    },
+    {
+        suit: '♦',
+        pname: '9',
+        rank: 7
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '8',
+        rank: 6
+    },
+    {
+        suit: '♥',
+        pname: '8',
+        rank: 6
+    },
+    {
+        suit: '♣',
+        pname: '8',
+        rank: 6
+    },
+    {
+        suit: '♦',
+        pname: '8',
+        rank: 6
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '7',
+        rank: 5
+    },
+    {
+        suit: '♥',
+        pname: '7',
+        rank: 5
+    },
+    {
+        suit: '♣',
+        pname: '7',
+        rank: 5
+    },
+    {
+        suit: '♦',
+        pname: '7',
+        rank: 5
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '6',
+        rank: 4
+    },
+    {
+        suit: '♥',
+        pname: '6',
+        rank: 4
+    },
+    {
+        suit: '♣',
+        pname: '6',
+        rank: 4
+    },
+    {
+        suit: '♦',
+        pname: '6',
+        rank: 4
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '5',
+        rank: 3
+    },
+    {
+        suit: '♥',
+        pname: '5',
+        rank: 3
+    },
+    {
+        suit: '♣',
+        pname: '5',
+        rank: 3
+    },
+    {
+        suit: '♦',
+        pname: '5',
+        rank: 3
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '4',
+        rank: 2
+    },
+    {
+        suit: '♥',
+        pname: '4',
+        rank: 2
+    },
+    {
+        suit: '♣',
+        pname: '4',
+        rank: 2
+    },
+    {
+        suit: '♦',
+        pname: '4',
+        rank: 2
+    },
+    // ----------------------------
+    {
+        suit: '♠',
+        pname: '3',
+        rank: 1
+    },
+    {
+        suit: '♥',
+        pname: '3',
+        rank: 1
+    },
+    {
+        suit: '♣',
+        pname: '3',
+        rank: 1
+    },
+    {
+        suit: '♦',
+        pname: '3',
+        rank: 1
+    },
+];
 const CardType={
             Single:"Single", //单
             Pair: "Pair",   //对子
@@ -31,68 +348,85 @@ const CardType={
             Unknown: "Unknown", //未知 14
             Pass: "Pass"     //过
 }
-
-function Card(){
-    this.name=name;
-
-    //this.point=point;
-    //this.suit=suit;
-    //根据卡牌定义名字
-    /*
-    黑桃：1-1.png 到 1-13.png
-    红桃：2-1.png 到 2-13.png
-    梅花：3-1.png 到 3-13.png
-    方块：4-1.png 到 4-13.png
-    小王：5-1.png
-    大王：5-2.png
-*/
-    /*if (this.point >= 3 && this.point <= 10) {
-            this.name = `${this.getSuitName(this.suit)}-${this.point}.png`; //  3-10
-        } else if (this.point === 1) {
-            this.name = `${this.getSuitName(this.suit)}-1.png`; // A
-        } else if (this.point === 11) {
-            this.name = `${this.getSuitName(this.suit)}-J.png`; // J
-        } else if (this.point === 12) {
-            this.name = `${this.getSuitName(this.suit)}-Q.png`; // Q
-        } else if (this.point === 13) {
-            this.name = `${this.getSuitName(this.suit)}-K.png`; // K
-        } else if (this.point === 14) {
-            this.name = `${this.getSuitName(this.suit)}-1.png`; // 鬼
-        }else if (this.point === 15) {
-        this.name = `${this.getSuitName(this.suit)}-2.png`; // 鬼
-    }*/
-}
-//图片命名第一个就是卡牌的花色
-function getSuit(card) {
-    return parseInt(card.substring(0, 1));
-}
-//图片第二个命名就是卡牌的大小1-13：A-k 5-1：小王 5-2：大王
-function getPoint(card) {
-    let i = parseInt(card.substring(2));//2
-    if (card.name.substring(2) === "2")
-        i += 13;
-    if (card.name.substring(2)=== "1")//A
-        i += 13;
-    if (card.name.substring(0,1) === "5")
-        i += 2; // 是王
-    return i;
-}
-/*Card.prototype.getSuitName = function(suit) {
-    switch (suit) {
-        case 1:
-            return '1'; // 菱形
-        case 2:
-            return '2'; // 梅花
-        case 3:
-            return '3'; // 红心
-        case 4:
-            return '4'; // 黑桃
-        case 5:
-            return '5'; // 鬼
-        default:
-            return '';
+//洗牌
+function washCard(arr) {
+    arr = [...arr];// 解决栈与堆问题，这样下面的操作不会改变原数组
+    for (const key in arr) {
+        let index = parseInt(Math.random() * arr.length);
+        [arr[key], arr[index]] = [arr[index], arr[key]];
     }
-}*/
+    // arr.reverse();
+    return arr;
+}
+let newAll = washCard(all);//创建新的牌堆
+// 发牌  直接给玩家发牌而不创建牌堆
+// 发牌
+function dealCard(arr) {
+    let player1 = arr.slice(0,17);
+    let player2 = arr.slice(17,34);
+    let player3 = arr.slice(34,51);//34
+    let diPai = arr.slice(51,54);
+    return { player1, player2, player3, diPai };
+}
+let { player1, player2, player3, diPai } = dealCard(newAll);//创建玩家
+//排序
+function sortCard(arr){ // 这里会改变原数组（栈内引用地址复制），后面不用返回值
+    // 排大小
+    arr.sort((a, b) => b.rank - a.rank);
+    // 排花色
+    function setSuitCompare(suit) {
+        switch (suit) {
+            case '♠':
+                return 4;
+            case '♥':
+                return 3;
+            case '♣':
+                return 2;
+            case '♦':
+                return 1;
+            default:
+                break;
+        }
+    }
+    for (let i = 0; i < 4; i++) {
+        for (const key in arr) {
+            if (key !== arr.length - 1) { // 不用遍历最后一次
+                let sc1 = setSuitCompare(arr[key].suit);
+                let sc2 = setSuitCompare(arr[+key + 1].suit);
+                if (arr[key].pname === arr[+key + 1].pname && sc1 < sc2) {
+                    [arr[key], arr[+key + 1]] = [arr[+key + 1], arr[key]];
+                }
+            }
+        }
+    }
+}
+// 开始游戏 逻辑
+function startGame(){
+    tangZi = {}
+    myShouPai = {}
+    var newAll = washCard(all)
+    var faPaiArr = dealCard(newAll)
+    [player1, player2, player3, diPai] = [faPaiArr.player1, faPaiArr.player2, faPaiArr.player3, faPaiArr.diPai];
+    shuaXinShouPai();//手牌刷新
+    shuaXinTangZi();//堂子刷新
+    p1IsDizhu = p2IsDizhu = p3IsDizhu = false;
+    isP1 = isP2 = isP3 = false;
+    nowBeiShu = 1;
+    p1ChuPaiLeMaA = p2ChuPaiLeMaA = true;
+}
+//判断胜利判断
+function canGameOver() {
+        if (player1.length === 0 || player2.length === 0) {
+            gameOverShuaXinPlayerShouPai();
+            // to do 刷新分数
+            return true
+        }else if (player3.length === 0) {
+            gameOverShuaXinPlayerShouPai();
+            return true;
+        }
+        return false
+}
+
 //判断牌的类型
 function jugdeType(list){
     sortDeck(list);//排序
@@ -686,7 +1020,7 @@ function test(){
     console.log("getplane",model.a111222);*/
 
 }
-test();
+//test();
 //module.exports = {
   //Card,
   //CardSuit
