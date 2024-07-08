@@ -243,6 +243,7 @@ function notcall(){
 
 }
 
+
 //叫地主
 function call(){
     console.log("player call")
@@ -292,4 +293,59 @@ function randomfarmer()
     return "qrc:/images/people-"+n+".png"
 }
 
+
+
+//机器人出牌
+// 出牌逻辑函数，传入参数为当前手牌和上家出的牌
+function makeMove(hand, lastPlayed) {
+    // 根据手牌和上家出牌情况判断可以出的牌
+    var cardsToPlay = [];
+
+    // 首先判断是否有能大过上家的牌
+    var bestPlay = findBestPlay(hand, lastPlayed);
+    if (bestPlay.length > 0) {
+        cardsToPlay = bestPlay;
+    } else {
+        // 如果没有能大过的牌，则尝试出其他牌型，这里可以根据具体游戏规则编写更复杂的逻辑
+        cardsToPlay = findAnyPlay(hand);
+    }
+
+    return cardsToPlay;
+}
+
+// 找到能大过上家的最佳牌组合
+function findBestPlay(hand, lastPlayed) {
+    // 在实际游戏中，这里需要实现更复杂的牌型判断和策略
+    var bestCombination = [];
+
+    // 简化为找到第一个符合条件的牌即停止
+    for (var i = 0; i < hand.length; ++i) {
+        if (lastPlayed.length === 0 || hand[i].value > lastPlayed[0].value) {
+            bestCombination.push(hand[i].value);
+            break;
+        }
+    }
+
+    return bestCombination;
+}
+
+// 找到任意可以出的牌
+function findAnyPlay(hand) {
+    // 简化为找到最小的一张牌进行出牌
+    var anyPlay = [];
+
+    if (hand.length > 0) {
+        anyPlay.push(hand[0].value);
+    }
+
+    return anyPlay;
+}
+
+// 假设机器人的手牌和上家出的牌
+var playerHand = [{ value: 3 }, { value: 4 }, { value: 5 }, { value: 6 }, { value: 7 }, { value: 8 }];
+var lastPlayedCards = [{ value: 8 }, { value: 9 }, { value: 10 }];
+
+// 机器人进行出牌决策
+var cardsToPlay = makeMove(playerHand, lastPlayedCards);
+console.log("机器人出牌:", cardsToPlay);
 
