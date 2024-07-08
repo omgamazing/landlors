@@ -4,8 +4,7 @@ import QtQuick.Controls 2.15
 Rectangle {
     width: 800
     height: 600
-
-    property int countdown: 10
+   property int countdown: 10
     property bool running: true
     property int turn: 1 // 默认从玩家开始
 
@@ -48,5 +47,5 @@ Rectangle {
         // 游戏开始初始化
         gameTimer.start()
         // 其他初始化逻辑...
-    }
+ }
 }

@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "game.js" as Controller
+import "card.js" as Card
 
 ApplicationWindow {
     id:window
@@ -319,7 +320,7 @@ ApplicationWindow {
     }
 
 
-    RowLayout {
+    /*RowLayout {
             id: myDecks_location
             visible:false
             x: 350
@@ -328,7 +329,7 @@ ApplicationWindow {
 
 
             Repeater {
-                model: 15 // 假设有5张牌
+                model: 17 // 假设有5张牌
                 delegate: Image {
                     source: "qrc:/poker/1-4.png"
                     y:0
@@ -343,6 +344,67 @@ ApplicationWindow {
 
                 }
             }
+    }*/
+
+    RowLayout {
+        id: myDecks_location
+        visible: false
+        x: 270
+        y: 480
+        spacing: -56 // 每张牌之间的间距
+
+        Repeater {
+            model: 17 // 假设有17张牌
+            delegate: Item {
+                width: 85
+                height: 100
+
+                Canvas {
+                    id: cardCanvas
+                    width: parent.width
+                    height: parent.height
+
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.clearRect(0, 0, width, height);
+
+                        // 绘制牌的背景
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.strokeStyle = "black";
+                        ctx.strokeRect(0, 0, width, height);
+
+                        //player1传入
+                        //var deck = player1;
+
+
+                        // 绘制牌的花色和名称
+                        //var rank = "A"; // 替换为牌的名称，如 "A", "2", "3", ...
+                        //var suit = "♠"; // 替换为牌的花色符号，如 "♠", "♦", "♣", "♥"
+
+                        ctx.font = "bold 24px Arial";
+                        ctx.fillStyle = (suit === "♠" || suit === "♣") ? "black" : "red";
+                        ctx.textAlign = "left";
+                        ctx.textBaseline = "top";
+                        ctx.fillText(suit + rank, 5, 5);
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill:parent
+                    onClicked: {
+                        parent.y=(parent.y===0?-15:0)
+                    }
+                }
+            }
+        }
+    }
+    function addCard(arr){
+
+        for (var i = 0; i < arr.length; i++) {
+                var card = arr[i]; // 获取玩家1的第i张牌数据
+                myDecks_location.itemAt(i).cardCanvas.rank = card.rank;
+                myDecks_location.itemAt(i).cardCanvas.suit = card.suit;}
     }
 
     RowLayout {
@@ -360,64 +422,54 @@ ApplicationWindow {
             }
         }
 
-    //卡牌从一个点移动到另一个点 移动效果的函数,用于发牌
-    /*Item {
-        property alias card: cardItem // 将内部的Card对象暴露给外部访问
 
-        Rectangle {
-            id: cardItem
-            width: 50
-            height: 80
-            color: "red" // 红色矩形，模拟卡牌
-            //rePosition();
 
-            function createCard(x, y) {
-                            var cardItem = Qt.createQmlObject('import QtQuick 2.15; Rectangle { \
-                                                                    width: 50; \
-                                                                    height: 80; \
-                                                                    color: "red"; \
-                                                                }', cardContainer, "dynamicCard");
-                            cardItem.x = x;
-                            cardItem.y = y;
-                            return cardItem;
-                        }
-            function move(from, to, duration) {
-                var animation = Qt.createQmlObject('import QtQuick 2.0; SequentialAnimation { \
-                                PropertyAnimation { target: cardItem; property: "x"; from: ' + from.x + '; to: ' + to.x + '; duration: ' + duration + ' } \
-                                PropertyAnimation { target: cardItem; property: "y"; from: ' + from.y + '; to: ' + to.y + '; duration: ' + duration + ' } \
-                            }', cardItem, "dynamicAnimation");
 
-                animation.start();
-            }
+    /*Rectangle{
+        id: btnBox
+        width: 200 // 设置宽度
+        height: 50 // 设置高度
 
-            function rePosition(container, cardList, flag) {
-                var p = { x: 0, y: 0 };
-                var spacingX = 21;
-                var spacingY = 15;
+        TextInput {
+                    padding: 10 // 内边距
+                    width: 150 // 宽度
+                    height: 30 // 高度
+                    //backgroundColor: "#ffff33" // 背景色
+                    //border.width: 0 // 边框宽度
+                    //radius: 20 // 圆角
+                    color: "#972b00" // 文本颜色
+                    focus: false // 失去焦点
+        }
+        // 第二个和第三个 input 的隐藏
+        TextInput {
+                    visible: false // 隐藏元素
+        }
+        TextInput {
+                    visible: false // 隐藏元素
+        }
+    }
 
-                if (flag === 0) {
-                    p.x = 50;
-                    p.y = (450 / 2) - (cardList.length + 1) * spacingY / 2;
-                } else if (flag === 1) {
-                    p.x = (800 / 2) - (cardList.length + 1) * spacingX / 2;
-                    p.y = 450;
-                } else if (flag === 2) {
-                    p.x = 700;
-                    p.y = (450 / 2) - (cardList.length + 1) * spacingY / 2;
-                }
+    //生成玩家牌
+    ListView {
+            id: playerlistView
+            width: parent.width
+            height: parent.height
+            clip: true
+            delegate: Item {
+                width: 80
+                height: 120
+                Column {
+                    anchors.centerIn: parent
 
-                for (var i = 0; i < cardList.length; i++) {
-                    var card = cardList[i];
-                    move(card, { x: card.x, y: card.y }, p, 10);
-                    container.setZ(i, card);
-                    if (flag === 1) {
-                        p.x += spacingX;
-                    } else {
-                        p.y += spacingY;
+                    Text {
+                        text: modelData.pname + modelData.suit
+                        font.pixelSize: 18
+                        horizontalAlignment: Text.AlignHCenter
                     }
                 }
             }
-        }
     }*/
+
+
 
 }
