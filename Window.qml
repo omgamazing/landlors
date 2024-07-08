@@ -329,8 +329,8 @@ ApplicationWindow {
 
 
                         // 绘制牌的花色和名称
-                        //var rank = "A"; // 替换为牌的名称，如 "A", "2", "3", ...
-                        //var suit = "♠"; // 替换为牌的花色符号，如 "♠", "♦", "♣", "♥"
+                        var rank = "A"; // 替换为牌的名称，如 "A", "2", "3", ...
+                        var suit = "♠"; // 替换为牌的花色符号，如 "♠", "♦", "♣", "♥"
 
                         ctx.font = "bold 24px Arial";
                         ctx.fillStyle = (suit === "♠" || suit === "♣") ? "black" : "red";

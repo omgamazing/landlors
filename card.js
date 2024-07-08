@@ -350,7 +350,7 @@ const CardType={
 }
 //洗牌
 function washCard(arr) {
-    arr = [...arr];// 解决栈与堆问题，这样下面的操作不会改变原数组
+    arr = [...arr];
     for (const key in arr) {
         let index = parseInt(Math.random() * arr.length);
         [arr[key], arr[index]] = [arr[index], arr[key]];
@@ -399,20 +399,6 @@ function sortCard(arr){ // 这里会改变原数组（栈内引用地址复制�
             }
         }
     }
-}
-// 开始游戏 逻辑
-function startGame(){
-    tangZi = {}
-    myShouPai = {}
-    var newAll = washCard(all)
-    var faPaiArr = dealCard(newAll)
-    [player1, player2, player3, diPai] = [faPaiArr.player1, faPaiArr.player2, faPaiArr.player3, faPaiArr.diPai];
-    shuaXinShouPai();//手牌刷新
-    shuaXinTangZi();//堂子刷新
-    p1IsDizhu = p2IsDizhu = p3IsDizhu = false;
-    isP1 = isP2 = isP3 = false;
-    nowBeiShu = 1;
-    p1ChuPaiLeMaA = p2ChuPaiLeMaA = true;
 }
 //判断胜利判断
 function canGameOver() {
