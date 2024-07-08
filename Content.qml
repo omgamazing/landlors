@@ -5,14 +5,23 @@ import QtQuick
 Item {
 
     property alias dialogs:_dialogs
+    property alias elements:_elements
+    property alias music:_music
 
     //定义了Dialogs,Dialogs.qml实现的具体的对话框
     Dialogs{
         id:_dialogs
     }
 
-    CardsPrepare{
+    Elements{
+        id:_elements
     }
+
+    Music{
+        id:_music
+    }
+
+
 
 
 

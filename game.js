@@ -1,3 +1,4 @@
+/*
 var players = [];
 var deck = [];
 var landlordIndex = -1;
@@ -31,44 +32,51 @@ function distributeCards() {
 
     // 更新 QML 界面显示
     // 例如通过信号发送更新手牌的命令到 QML 的 PokerPanel 中显示玩家手牌
-}
+}*/
 
 //游戏控制器：操作整个游戏的运行，接受信号并做出反应
 //开始
-var decks
-var meDecks
-var lplayerDecks
-var rplayerDecks
-var landlorsDecks
+var decks=[]
+var meDecks=[]
+var lplayerDecks=[]
+var rplayerDecks=[]
+var landlorsDecks=[]
+
+
 
 function start(){
+
+    console.log("---startGame----")
+
+    window.content.music.backgroundMusic.stop()
+    window.content.music.backgroundMusic.play()
+
     decks=[]
     meDecks=[]
     lplayerDecks=[]
     rplayerDecks=[]
     landlorsDecks=[]
 
-    _startImage.visible = false;
-
-    _me.visible=true
-    _landlor.visible=false
-    _lplayer.visible=true
-    _rplayer.visible=true
-    landlorsDecks_location.visible=false
-
-   //var backgroundMusic = Qt.createComponent("Music.qml");
-   //backgroundMusic.play()
-
-    //displayclockTimer.start();
-
-    console.log("---startGame----")
-
+    //显示三个玩家的农民形象和中间牌盒，开始按钮消失
+    window.content.elements.me.visible=true
+    window.content.elements.lplayer.visible=true
+    window.content.elements.rplayer.visible=true
+    window.content.elements.me.source=randomfarmer()
+    window.content.elements.lplayer.source=randomfarmer()
+    window.content.elements.rplayer.source=randomfarmer()
+    window.content.elements.landlor.visible=false
+    window.content.elements.landlorsDecksLocation.visible=false
+    window.content.elements.startButtonImage.visible=false
+    window.content.elements.notchuButtonImage.visible=false
+    window.content.elements.chuButtonImage.visible=false
 
     initializeDeck()
     shuffleDeck()
 
 
     dealCards()
+
+
     console.log("--排序后--")
     console.log("\n-------我的牌:-------\n");
     sortDeck(meDecks)
@@ -80,52 +88,22 @@ function start(){
     sortDeck(landlorsDecks)
 
 
+    //出现我的牌堆，左边、右边玩家的牌及牌数、出现按钮叫与不叫
+    window.content.elements.notcallButtonImage.visible = true;
+    window.content.elements.callButtonImage.visible = true;
+    window.content.elements.meDecksLocation.visible=true;
+    window.content.elements.lDecksLocation.visible=true;
+    window.content.elements.rDecksLocation.visible=true;
 
-    _notcallButtonImage.visible = true;
-    _callButtonImage.visible = true;
-    myDecks_location.visible=true
-
-}
-
-//不叫
-function notcall(){
-    _notcallButtonImage.visible=false
-    _callButtonImage.visible=false
-    _nocall.visible=true
-    console.log("player notcall")
-    hidecallTimer.start();
-    landlorsDecks_location.visible=true
-    _notchuImage.visible=true
-    _chuImage.visible=true
+    /*
+    console.log(meDecks.length);
+    console.log(rplayerDecks.length);
+    console.log(lplayerDecks.length);
+    console.log(landlorsDecks.length);*/
 
 
-}
-//设置不抢和农民形象消失，地主形象出现
-function hide(){
-notcall.visible = false; // 定时器触发后隐藏图片按钮
- // 定时器触发后显示图片
-_rcall.visible = true;
 
-}
 
-//叫地主
-function call(){
-    _callButtonImage.visible=false
-    _notcallButtonImage.visible=false
-    //mecall.visible=!mecall.visible
-    _call.visible=true
-    console.log("player call")
-    myhidecallTimer.start();
-    landlorsDecks_location.visible=true
-    _notchuImage.visible=true
-    _chuImage.visible=true
-}
-function notchu(){
-    _notchuImage.visible=false
-    _chuImage.visible=false
-
-}
-function chu(){
 }
 
 var suits = ["♠️", "♥️", "🔷", "♣️"]
@@ -142,10 +120,11 @@ function initializeDeck() {
     decks.push({ suit:"🤡", rank: 17 }); // 大王
 
 
+    /*
     console.log("----所有牌的信息:-----");
             for (var i = 0; i < decks.length; i++) {
                 console.log("索引",i,"花色:", decks[i].suit, " 牌面:", decks[i].rank);
-            }
+            }*/
 }
 
 //洗牌：每次迭代生成一个随机整数j，该整数满足 [0,i)。这个随机整数j用来确定当前元素i要移动到的位置。
@@ -156,6 +135,7 @@ function shuffleDeck() {
         decks[j]=decks[i]
         decks[i]=tmp
     }
+
 
     /*
     console.log("所有牌的信息:");
@@ -187,7 +167,6 @@ function dealCards() {
 
     }
 
-
     /*
     console.log("\n-------我的牌:-------\n");
     for (var e = 0; e < meDecks.length; e++) {
@@ -206,6 +185,7 @@ function dealCards() {
         console.log("索引",e,"花色:", landlorsDecks[e].suit, " 牌面:", landlorsDecks[e].rank);
     }*/
 }
+
 //排序：根据玩家牌面大小由大到小进行排序
 //排序特效（未实现）：动画与音乐
 //排序规则：每一次大循环确定一张牌的位置，小循环从牌当前位置向后比较
@@ -221,14 +201,95 @@ function sortDeck(cards){
                 }
             }
         }
+
     for (var e = 0; e < cards.length; e++) {
         console.log("索引",e,"花色:",cards[e].suit, " 牌面:", cards[e].rank);
     }
 
     return cards;
 }
-function print(cards){
-    for (var e = 0; e < cards.length; e++) {
-        console.log("索引",e,"花色:",cards[e].suit, " 牌面:", cards[e].rank);
+
+/*
+
+//向玩家中添加地主牌（叫地主后）
+function addcards(cards){
+    for(var i=0;i<landlorsDecks.length;i++){
+        var card={suit:landlorsDecks[i].suit,rank:landlorsDecks[i].rank}
+        console.log(landlorsDecks[i].suit,landlorsDecks[i].rank)
+        cards.push(card)
     }
+        sortDeck(cards)
+
+}*/
+
+
+//不叫
+function notcall(){
+    console.log("player notcall")
+
+    window.content.elements.notcallButtonImage.visible=false
+    window.content.elements.callButtonImage.visible=false
+    window.content.elements.centercard.visible=false
+    window.content.elements.landlorsDecksLocation.visible=true
+
+
+    window.content.elements.notchuButtonImage.visible=false
+    window.content.elements.chuButtonImage.visible=false
+
+
+
+    //console.log("右边玩家叫地主后，右边玩家的牌")
+    //addcards(lplayerDecks)
+
 }
+
+//叫地主
+function call(){
+    console.log("player call")
+
+
+
+    window.content.elements.callButtonImage.visible=false
+    window.content.elements.notcallButtonImage.visible=false
+    window.content.elements.centercard.visible=false
+    window.content.elements.landlorsDecksLocation.visible=true
+
+
+
+
+    window.content.elements.notchuButtonImage.visible=true
+    window.content.elements.chuButtonImage.visible=true
+    //console.log("我叫地主后，我的牌")
+    //addcards(meDecks)
+
+
+
+}
+function notchu(){
+    console.log("guo")
+
+
+    window.content.elements.notchuButtonImage.visible=false
+    window.content.elements.chuButtonImage.visible=false
+
+
+
+}
+function chu(){
+    console.log("chu")
+
+
+    window.content.elements.notchuButtonImage.visible=false
+    window.content.elements.chuButtonImage.visible=false
+
+}
+function randomfarmer()
+{
+    //生成2-3的整数
+    var n=Math.floor(Math.random() * 2) + 2
+    if(n!=2)
+        n=3
+    return "qrc:/images/people-"+n+".png"
+}
+
+

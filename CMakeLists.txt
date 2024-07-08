@@ -23,6 +23,7 @@ qt_add_qml_module(
   Content.qml
   Dialogs.qml
   CardsPrepare.qml
+  Elements.qml
   game.js
   card.js
   SOURCES
