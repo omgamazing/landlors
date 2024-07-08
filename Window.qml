@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "game.js" as Controller
+import "card.js" as Card
 
 ApplicationWindow {
     id:window
@@ -51,64 +52,301 @@ ApplicationWindow {
         id:_content
     }
 
+/*
     //卡牌从一个点移动到另一个点 移动效果的函数,用于发牌
-    /*Item {
+    Item {
         property alias card: cardItem // 将内部的Card对象暴露给外部访问
+=======
+     //按钮：叫与不叫
+     RowLayout {
+         x:320
+         y: 420
+         spacing: 120
 
-        Rectangle {
-            id: cardItem
-            width: 50
-            height: 80
-            color: "red" // 红色矩形，模拟卡牌
-            //rePosition();
+         //不叫地主
+         Image{
+             //signal isclicked()
+             id: _notcallButtonImage
+             visible: false
+             source:"qrc:/images/bujiao1.png"
+             fillMode: Image.PreserveAspectFit
 
-            function createCard(x, y) {
-                            var cardItem = Qt.createQmlObject('import QtQuick 2.15; Rectangle { \
-                                                                    width: 50; \
-                                                                    height: 80; \
-                                                                    color: "red"; \
-                                                                }', cardContainer, "dynamicCard");
-                            cardItem.x = x;
-                            cardItem.y = y;
-                            return cardItem;
+             TapHandler {
+                 //cursorShape: Qt.PointingHandCursor
+                 onTapped: Controller.notcall()
+             }
+
+             HoverHandler{
+                  cursorShape: Qt.PointingHandCursor
+                  onHoveredChanged: {
+                      _notcallButtonImage.source = hovered ? "qrc:/images/bujiao2.png" : "qrc:/images/bujiao1.png"
+                  }
+             }
+         }
+
+         //叫地主按钮
+         Image{
+             signal isclicked()
+             id: _callButtonImage
+             visible: false
+             source:"qrc:/images/jiaodizhu1.png"
+             fillMode: Image.PreserveAspectFit
+             TapHandler {
+                 cursorShape: Qt.PointingHandCursor
+                 onTapped: {
+                     Controller.call()
+                     }
+             }
+             HoverHandler{
+                  cursorShape: Qt.PointingHandCursor
+                  onHoveredChanged: {
+                      _callButtonImage.source = hovered ? "qrc:/images/jiaodizhu2.png" : "qrc:/images/jiaodizhu1.png"
+                  }
+             }
+
+         }
+
+     }
+
+     //动画：叫地主
+     Image{
+         id:_call
+         visible:false
+         source: "qrc:/images/jiaodizhu.png"
+         anchors.top:centercard.bottom
+         anchors.topMargin:10
+         anchors.horizontalCenter: centercard.horizontalCenter
+     }
+
+     //动画：不抢
+     Image{
+         visible:false
+         id:_nocall
+         source: "qrc:/images/buqiang.png"
+         anchors.top:centercard.bottom
+         anchors.topMargin:10
+         anchors.horizontalCenter: centercard.horizontalCenter
+     }
+
+     Timer{
+         id:hidecallTimer
+         interval: 200
+         repeat: false
+         onTriggered: hide()
+         }
+
+     Timer{
+         id: myhidecallTimer
+         interval: 200
+         running:false
+         repeat: false
+         onTriggered: myhide()
+         }
+
+     //设置叫地主和农民形象消失，地主形象出现
+     function hide(){
+         _nocall.visible=false;
+         //_rplayer.source="qrc:/images/people-1.png"
+         _rplayer.visible=false
+         _landlor.visible=true
+         _landlor.mirror=true
+         _landlor.x=_rplayer.x
+         _landlor.y=_rplayer.y
+
+     }
+
+     function myhide(){
+         _call.visible=false;
+        // _me.source="qrc:/images/people-1.png"
+         _me.visible=false
+         _landlor.visible=true
+         _landlor.mirror=false
+         _landlor.x=_me.x
+         _landlor.y=_me.y
+     }
+
+     Actions{
+         id:actions
+         start.onTriggered:Controller.start()
+         call.onTriggered: Controller.call()
+         notcall.onTriggered: Controller.notcall()
+         about.onTriggered: content.dialogs.about.open()
+     }
+
+     Content{
+         id:_content
+     }
+
+    property int count_me:0
+    property int count_left:0
+    property int count_right:0
+    //分数显示栏
+    ColumnLayout{
+            id:score
+            width:100
+            height:100
+            x:780
+            y:20
+
+            spacing:-10
+
+            Text{text:"    我\t"+count_me+"分";font.pointSize: 16;color:"white"}
+            Text{text:"左侧机器人 "+count_left+"分";font.pointSize: 16;color:"white"}
+            Text{text:"右侧机器人 "+count_right+"分";font.pointSize: 16;color:"white"}
+    }
+
+
+    /*RowLayout {
+            id: myDecks_location
+            visible:false
+            x: 350
+            y: 480
+            spacing: -56 // 每张牌之间的间距
+
+
+            Repeater {
+                model: 17 // 假设有5张牌
+                delegate: Image {
+                    source: "qrc:/poker/1-4.png"
+                    y:0
+
+                    TapHandler {
+                        onTapped: {
+                            parent.y=(parent.y===0?-15:0)
                         }
-            function move(from, to, duration) {
-                var animation = Qt.createQmlObject('import QtQuick 2.0; SequentialAnimation { \
-                                PropertyAnimation { target: cardItem; property: "x"; from: ' + from.x + '; to: ' + to.x + '; duration: ' + duration + ' } \
-                                PropertyAnimation { target: cardItem; property: "y"; from: ' + from.y + '; to: ' + to.y + '; duration: ' + duration + ' } \
-                            }', cardItem, "dynamicAnimation");
 
-                animation.start();
+                    }
+
+
+                }
             }
+    }
 
-            function rePosition(container, cardList, flag) {
-                var p = { x: 0, y: 0 };
-                var spacingX = 21;
-                var spacingY = 15;
+    RowLayout {
+        id: myDecks_location
+        visible: false
+        x: 270
+        y: 480
+        spacing: -56 // 每张牌之间的间距
 
-                if (flag === 0) {
-                    p.x = 50;
-                    p.y = (450 / 2) - (cardList.length + 1) * spacingY / 2;
-                } else if (flag === 1) {
-                    p.x = (800 / 2) - (cardList.length + 1) * spacingX / 2;
-                    p.y = 450;
-                } else if (flag === 2) {
-                    p.x = 700;
-                    p.y = (450 / 2) - (cardList.length + 1) * spacingY / 2;
+        Repeater {
+            model: 17 // 假设有17张牌
+            delegate: Item {
+                width: 85
+                height: 100
+
+                Canvas {
+                    id: cardCanvas
+                    width: parent.width
+                    height: parent.height
+
+                    onPaint: {
+                        var ctx = getContext("2d");
+                        ctx.clearRect(0, 0, width, height);
+
+                        // 绘制牌的背景
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(0, 0, width, height);
+                        ctx.strokeStyle = "black";
+                        ctx.strokeRect(0, 0, width, height);
+
+                        //player1传入
+                        //var deck = player1;
+
+
+                        // 绘制牌的花色和名称
+                        //var rank = "A"; // 替换为牌的名称，如 "A", "2", "3", ...
+                        //var suit = "♠"; // 替换为牌的花色符号，如 "♠", "♦", "♣", "♥"
+
+                        ctx.font = "bold 24px Arial";
+                        ctx.fillStyle = (suit === "♠" || suit === "♣") ? "black" : "red";
+                        ctx.textAlign = "left";
+                        ctx.textBaseline = "top";
+                        ctx.fillText(suit + rank, 5, 5);
+                    }
                 }
 
-                for (var i = 0; i < cardList.length; i++) {
-                    var card = cardList[i];
-                    move(card, { x: card.x, y: card.y }, p, 10);
-                    container.setZ(i, card);
-                    if (flag === 1) {
-                        p.x += spacingX;
-                    } else {
-                        p.y += spacingY;
+                MouseArea {
+                    anchors.fill:parent
+                    onClicked: {
+                        parent.y=(parent.y===0?-15:0)
                     }
                 }
             }
         }
+    }
+    function addCard(arr){
+
+        for (var i = 0; i < arr.length; i++) {
+                var card = arr[i]; // 获取玩家1的第i张牌数据
+                myDecks_location.itemAt(i).cardCanvas.rank = card.rank;
+                myDecks_location.itemAt(i).cardCanvas.suit = card.suit;}
+    }
+
+    RowLayout {
+            id: landlorsDecks_location
+            visible: false
+            x: 380
+            y: 30
+            spacing:8// 每张牌之间的间距
+
+            Repeater {
+                model: 3 // 假设有5张牌
+                delegate: Image {
+                    source: "qrc:/poker/1-4.png"
+                }
+            }
+        }
+
+*/
+
+
+
+    /*Rectangle{
+        id: btnBox
+        width: 200 // 设置宽度
+        height: 50 // 设置高度
+
+        TextInput {
+                    padding: 10 // 内边距
+                    width: 150 // 宽度
+                    height: 30 // 高度
+                    //backgroundColor: "#ffff33" // 背景色
+                    //border.width: 0 // 边框宽度
+                    //radius: 20 // 圆角
+                    color: "#972b00" // 文本颜色
+                    focus: false // 失去焦点
+        }
+        // 第二个和第三个 input 的隐藏
+        TextInput {
+                    visible: false // 隐藏元素
+        }
+        TextInput {
+                    visible: false // 隐藏元素
+        }
+    }
+
+    //生成玩家牌
+    ListView {
+            id: playerlistView
+            width: parent.width
+            height: parent.height
+            clip: true
+            delegate: Item {
+                width: 80
+                height: 120
+                Column {
+                    anchors.centerIn: parent
+
+                    Text {
+                        text: modelData.pname + modelData.suit
+                        font.pixelSize: 18
+                        horizontalAlignment: Text.AlignHCenter
+                    }
+                }
+            }
     }*/
+
+
 
 }
