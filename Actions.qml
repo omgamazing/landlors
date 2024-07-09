@@ -7,9 +7,6 @@ Item {
     property alias start: _start
     property alias quit: _quit
     property alias about: _about
-    property alias call: _call
-    property alias notcall: _notcall
-
 
     Action{
         id:_start
@@ -32,22 +29,4 @@ Item {
         icon.name: "help-about"
     }
 
-    Action{
-        id:_call
-        onTriggered:{
-        callButton.clicked();
-    }
-}
-    Action{
-        id:_notcall
-        onTriggered:{
-        notcallButton.clicked();
-    }
-}
-    Action{
-        id:_myhide
-        onTriggered:{
-       myhidecallTimer.start();
-    }
-}
 }

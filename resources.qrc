@@ -66,14 +66,16 @@
         <file>images/jiaodizhu.png</file>
         <file>images/bujiao1.png</file>
         <file>images/bujiao2.png</file>
-        <file>images/buyao1.png</file>
-        <file>images/buyao2.png</file>
-        <file>images/buyao3.png</file>
+        <file>images/pass1.png</file>
+        <file>images/pass2.png</file>
+        <file>images/pass3.png</file>
+        <file>images/pass.png</file>
         <file>images/chupai1.png</file>
         <file>images/chupai2.png</file>
         <file>images/chupai3.png</file>
         <file>images/jiaodizhu1.png</file>
         <file>images/jiaodizhu2.png</file>
+        <file>images/game.png</file>
         <file>images/clock.png</file>
         <file>images/number.png</file>
         <file>music.qml</file>
