@@ -7,12 +7,12 @@
     Spade:4,//黑桃
     Joker:5
 }*/
-/*//图片命名第一个就是卡牌的花色
-function getSuit(card) {
-    return parseInt(card.substring(0, 1));
-}*/
+//图片命名第一个就是卡牌的花色
+/*function getSuit(card) {
+    return parseInt(card.name.substring(0, 1));
+}
 //图片第二个命名就是卡牌的大小1-13：A-k 5-1：小王 5-2：大王
-/*function getPoint(card) {
+function getPoint(card) {
     let i = parseInt(card.substring(2));//2
     if (card.name.substring(2) === "2")
         i += 13;
@@ -22,23 +22,9 @@ function getSuit(card) {
         i += 2; // 是王
     return i;
 }*/
-function getSuitName(suit) {
-    switch (suit) {
-        case 1:
-            return '1'; // 菱形
-        case 2:
-            return '2'; // 梅花
-        case 3:
-            return '3'; // 红心
-        case 4:
-            return '4'; // 黑桃
-        case 5:
-            return '5'; // 鬼
-        default:
-            return '';
-    }
-}
-//简单粗暴的将所有牌举例出来，以免混乱
+//function getSuitName(suit) {
+
+//简单粗暴的将所有牌举例出来
 let all = [
     {
         suit: '👻',
@@ -324,6 +310,48 @@ let all = [
         rank: 1
     },
 ];
+function Card(point,suit){
+    this.point=point;
+    this.suit=suit;
+    //根据卡牌定义名字
+    /*
+     *   黑桃：1-1.png 到 1-13.png
+     *   红桃：2-1.png 到 2-13.png
+     *   梅花：3-1.png 到 3-13.png
+     *   方块：4-1.png 到 4-13.png
+     *   小王：5-1.png
+     *   大王：5-2.png
+     */
+    if (this.point >= 3 && this.point <= 10) {
+        this.name = `${this.getSuitName(this.suit)}-${this.point}.png`; //  3-10
+    } else if (this.point === 1) {
+        this.name = `${this.getSuitName(this.suit)}-1.png`; // A
+    } else if (this.point === 11) {
+        this.name = `${this.getSuitName(this.suit)}-J.png`; // J
+    } else if (this.point === 12) {
+        this.name = `${this.getSuitName(this.suit)}-Q.png`; // Q
+    } else if (this.point === 13) {
+        this.name = `${this.getSuitName(this.suit)}-K.png`; // K
+    } else if (this.point === 14) {
+        this.name = `${this.getSuitName(this.suit)}-15.png`; // 鬼
+    }
+}
+Card.prototype.getSuitName = function(suit) {
+    switch (suit) {
+        case 1:
+            return '1'; // 菱形
+        case 2:
+            return '2'; // 梅花
+        case 3:
+            return '3'; // 红心
+        case 4:
+            return '4'; // 黑桃
+        case 5:
+            return '5'; // 鬼
+        default:
+            return '';
+    }
+}
 const CardType={
             Single:"Single", //单
             Pair: "Pair",   //对子
@@ -350,12 +378,13 @@ const CardType={
 }
 //洗牌
 function washCard(arr) {
-    arr = [...arr];// 解决栈与堆问题，这样下面的操作不会改变原数组
+    arr = [...arr];
     for (const key in arr) {
         let index = parseInt(Math.random() * arr.length);
         [arr[key], arr[index]] = [arr[index], arr[key]];
     }
     // arr.reverse();
+    console.log("---xipai----")
     return arr;
 }
 let newAll = washCard(all);//创建新的牌堆
@@ -366,9 +395,12 @@ function dealCard(arr) {
     let player2 = arr.slice(17,34);
     let player3 = arr.slice(34,51);//34
     let diPai = arr.slice(51,54);
+    console.log("---fapai---")
+    console.log("---fapai---")
     return { player1, player2, player3, diPai };
 }
 let { player1, player2, player3, diPai } = dealCard(newAll);//创建玩家
+
 //排序
 function sortCard(arr){ // 这里会改变原数组（栈内引用地址复制），后面不用返回值
     // 排大小
@@ -399,34 +431,39 @@ function sortCard(arr){ // 这里会改变原数组（栈内引用地址复制�
             }
         }
     }
+    console.log("---paixu----")
 }
-// 开始游戏 逻辑
+//开始游戏
 function startGame(){
-    tangZi = {}
-    myShouPai = {}
-    var newAll = washCard(all)
-    var faPaiArr = dealCard(newAll)
-    [player1, player2, player3, diPai] = [faPaiArr.player1, faPaiArr.player2, faPaiArr.player3, faPaiArr.diPai];
-    shuaXinShouPai();//手牌刷新
-    shuaXinTangZi();//堂子刷新
+    var tangzi={}
+    var myShouPai={}
+    var newAll=washCard(all)
+    let faPaiArr = dealCard(newAll);
+    var player1=faPaiArr.player1
+    var player2=faPaiArr.player2
+    var player3=faPaiArr.player3
+    var dipai=faPaiArr.dipai
+
     p1IsDizhu = p2IsDizhu = p3IsDizhu = false;
     isP1 = isP2 = isP3 = false;
-    nowBeiShu = 1;
-    p1ChuPaiLeMaA = p2ChuPaiLeMaA = true;
+    var nowBeiShu = 1
 }
+// 谁是地主
+let p1IsDizhu = false, p2IsDizhu = false, p3IsDizhu = false;
+let p1YaoBuQi = false, p2YaoBuQi = false, p3YaoBuQi = false;
+let isP1 = false, isP2 = false, isP3 = false;
 //判断胜利判断
 function canGameOver() {
         if (player1.length === 0 || player2.length === 0) {
-            gameOverShuaXinPlayerShouPai();
-            // to do 刷新分数
+
+            // to do 刷新分数分数
             return true
         }else if (player3.length === 0) {
-            gameOverShuaXinPlayerShouPai();
+            //to do w玩家手牌刷新
             return true;
         }
         return false
 }
-
 //判断牌的类型
 function jugdeType(list){
     sortDeck(list);//排序
@@ -507,17 +544,17 @@ function sortDeck(cards) {
                 });
              return cards;
 }
-/*function getPoint(card){
+function getPoint(card){
     return card.point;
 }
 function getSuit(card){
     return card.suit;
-}*/
+}
 function getMax(card_index, list) {
 
     let count = new Array(14).fill(0); // 创建一个长度为14的数组，初始值都为0
         // 遍历牌列表，统计每种牌的数量
-        for (let i = 0; i < list.length; i++) {
+        /*for (let i = 0; i < list.length; i++) {
             if (getSuit(list[i]) === 5) {
                 count[13]++; // 王的颜色为5，对应数组的最后一个元素
             } else {
@@ -541,11 +578,11 @@ function getMax(card_index, list) {
                     card_index.a[3].push(i + 1);
                     break;
             }
-        }
+        }break*/
 
-    //let frequencyMap = new Map();
+    let frequencyMap = new Map();
         // 计算频率
-        /*for (const card of list) {
+        for (const card of list) {
             let point = getPoint(card); // 牌的牌值都是从A开始
             if (frequencyMap.has(point)) {
                 frequencyMap.set(point, frequencyMap.get(point) + 1);
@@ -559,7 +596,7 @@ function getMax(card_index, list) {
             if (count >= 1 && count <= 4) {
                 card_index.a[count - 1].push(value);
             }
-        });*/
+        });
 }
 //查看地主牌权值，判断是否抢地主 查看2||鬼的个数
 function getScore(list){
@@ -619,6 +656,7 @@ const Common={
                }
 
                // 如果王不构成炸弹则拆单
+               //获取名字图片的低一个
                if (list.length >= 2 && getSuit(list[0]) === 5 && getSuit(list[1]) !== 5) {
                    del.push(list[0]);
                    model.a1.push(list[0].name);
@@ -823,7 +861,7 @@ const Common={
 //隐藏牌
 function hideCards(list) {
     for (let i = 0, len = list.length; i < len; i++) {
-        list[i].setVisible(false);
+        //list[i].setVisible(false);
     }
 }
 //检查当前的牌是否能出
@@ -902,64 +940,64 @@ function getOrder2(list) {
 //测试牌型
 function test(){
     // 测试用例
-    //let testCases = [
+    let testCases = [
         // 单张牌
-        //[new Card(3, 1)],
+        [new Card(3, 1)],
 
         // 对子
-        //[new Card(2, 2), new Card(2, 4)],
+        [new Card(2, 2), new Card(2, 4)],
 
         // 三张牌
-        //[new Card(5, 3), new Card(5, 4), new Card(5, 1)],
+        [new Card(5, 3), new Card(5, 4), new Card(5, 1)],
         //三带一
-        //[new Card(5, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1)],
+        [new Card(5, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1)],
         //三带对
-        //[new Card(5, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
+        [new Card(5, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
 
         // 四张牌
-        //[new Card(1, 2), new Card(1, 4), new Card(1, 3), new Card(1, 1)],
+        [new Card(1, 2), new Card(1, 4), new Card(1, 3), new Card(1, 1)],
 
         // 炸弹
-        //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4)],
+        [new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4)],
 
         // 顺子  被检测为三带一对
-        //[new Card(1, 3), new Card(2, 4), new Card(3, 1), new Card(4, 2), new Card(5, 3)],
+        [new Card(1, 3), new Card(2, 4), new Card(3, 1), new Card(4, 2), new Card(5, 3)],
         // 连队
-        //[new Card(1, 3), new Card(1, 4), new Card(2, 1), new Card(2, 2), new Card(3, 3), new Card(3, 4)],
+        [new Card(1, 3), new Card(1, 4), new Card(2, 1), new Card(2, 2), new Card(3, 3), new Card(3, 4)],
         //飞机不带
-        //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3)],
+        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3)],
         //飞机带两对  为检测
-        //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
+        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 4), new Card(5, 1), new Card(4, 1), new Card(4, 3)],
         //飞机带两单  未检查到
-        //[new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 1), new Card(4, 1)],
+        [new Card(1, 3), new Card(1, 4), new Card(1, 2),new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(5, 1), new Card(4, 1)],
         //炸弹带两单  为检测到
-        //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2)],
+        [new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2)],
         //炸弹带一对
-        //[new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2), new Card(4, 3)],
+        [new Card(2, 1), new Card(2, 2), new Card(2, 3), new Card(2, 4), new Card(4, 2), new Card(4, 3)],
         // 王炸
-        //[new Card(16, 5), new Card(17, 5)],
-      //];
+        [new Card(16, 5), new Card(17, 5)],
+      ];
 
-    //testCases.forEach(function(cards) {
-        //let result = jugdeType(cards);
-        //console.log(`牌型为${result}`);
-    //});
+    testCases.forEach(function(cards) {
+        let result = jugdeType(cards);
+        console.log(`牌型为${result}`);
+    });
 
     //name
-    /*let aceOfDiamonds = new Card(1, 1); // Ace of Diamonds (菱形)
-    console.log(aceOfDiamonds.name); // Outputs: '1-1.png'
+    /*let aceOfDiamonds = new Card(1, 1); //
+    console.log(aceOfDiamonds.name); // 1-1.png
 
-    let kingOfHearts = new Card(13, 3); // King of Hearts (红心)
-    console.log(kingOfHearts.name); // Outputs: '3-K.png'
+    let kingOfHearts = new Card(13, 3); //
+    console.log(kingOfHearts.name); // 3-K.png
 
     let joker1 = new Card(14, 5); // 小王
-    console.log(joker1.name); // 输出: '5-15.png'
+    console.log(joker1.name); //  5-15.png
 
     let joker2 = new Card(15, 5); // 大王
-    console.log(joker2.name); // 输出: '5-16.png'
+    console.log(joker2.name); // 5-16.png
 */
 
-    /*let list = [
+    let list = [
         { name: 'A' },
         { name: '2' },
         { name: '3' },
@@ -975,18 +1013,18 @@ function test(){
         { name: '8' },
         { name: '9' },
         { name: '9' }
-    ];*/
+    ];
     //let model = { a1: [] };
     /*let model = {
         a1: [], // 存放单牌的数组
         a2: []  // 存放对子牌的数组
     };*/
-    /*console.log("Before getTwo:", list);
-    Common.getTwo(list, model);
+    console.log("Before getTwo:", list);
+    /*Common.getTwo(list, model);
     console.log("Pairs:", model.a2);*/
-    /*let model={
-           //value: 0,// 权值
-            //num: 0,// 手数
+    let model={
+           value: 0,// 权值
+            num: 0,// 手数
             a1: [], // 单张
             a2: [],// 对子
             a3: [], // 3带
@@ -994,14 +1032,14 @@ function test(){
             a112233: [], // 连牌
             a111222: [], // 飞机
             a4: [] // 炸弹
-    };*/
+    };
 
     //model
-    //console.log("Before:", list);
-    /*Common.getSingle(list, model);
-    console.log("Single cards:", model.a1);*/
+    console.log("Before:", list);
+    Common.getSingle(list, model);
+    console.log("Single cards:", model.a1);
 
-    /*Common.getThree(list, model);
+    Common.getThree(list, model);
     console.log("getthree:",model.a3);
 
     Common.getBoomb(list, model);
@@ -1017,7 +1055,7 @@ function test(){
     console.log("gettwotwo:",model.a112233);
 
     Common.getPlane(list, model);
-    console.log("getplane",model.a111222);*/
+    console.log("getplane",model.a111222);
 
 }
 //test();

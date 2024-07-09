@@ -35,7 +35,8 @@ qt_add_qml_module(
   QML_FILES
   SOURCES
   QML_FILES
-  Model.qml)
+Cards.qml )
+
 
 target_compile_features(applandlors PRIVATE cxx_std_20)
 

@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "game.js" as Controller
+import "card.js" as Card
 
 Item {
 
@@ -542,4 +543,123 @@ Item {
          return "qrc:/images/people-"+n+".png"
      }
 
+
+         //卡牌从一个点移动到另一个点 移动效果的函数,用于发牌
+         //Item {
+             //property alias card: cardItem // 将内部的Card对象暴露给外部访问
+
+         /*RowLayout {
+             id: _landlorsDecksLocation
+             visible: false
+             x: 270
+             y: 480
+             spacing: -56 // 每张牌之间的间距
+
+             Repeater {
+                 model: 17 // 假设有17张牌
+                 delegate: Item {
+                     width: 85
+                     height: 100
+
+                     Canvas {
+                         id: cardCanvas
+                         width: parent.width
+                         height: parent.height
+
+                         onPaint: {
+                             var ctx = getContext("2d");
+                             ctx.clearRect(0, 0, width, height);
+
+                             // 绘制牌的背景
+                             ctx.fillStyle = "white";
+                             ctx.fillRect(0, 0, width, height);
+                             ctx.strokeStyle = "black";
+                             ctx.strokeRect(0, 0, width, height);
+
+                             //player1传入
+
+                             var rank; // 替换为牌的名称
+                             var suit = "♠"; // 替换为牌的花色符号
+                             for(var i=0;i<deck.length;i++){
+
+                             }
+
+                             // 绘制牌的花色和名称
+
+                             ctx.font = "bold 24px Arial";
+                             ctx.fillStyle = (suit === "♠" || suit === "♣") ? "black" : "red";
+                             ctx.textAlign = "left";
+                             ctx.textBaseline = "top";
+                             ctx.fillText(suit + rank, 5, 5);
+                         }
+                     }
+
+                     MouseArea {
+                         anchors.fill:parent
+                         onClicked: {
+                             parent.y=(parent.y===0?-15:0)
+                         }
+                     }
+                 }
+             }
+         }
+         function addCardView(arr){
+             var deck=Card.player1Card()
+             for (var i = 0; i < arr.length; i++) {
+                     var card = arr[i]; // 获取玩家1的第i张牌数据
+                     myDecks_location.itemAt(i).cardCanvas.rank = card.rank;
+                     myDecks_location.itemAt(i).cardCanvas.suit = card.suit;}
+         }*/
+
+
+
+
+
+         /*Rectangle{
+             id: btnBox
+             width: 200 // 设置宽度
+             height: 50 // 设置高度
+
+             TextInput {
+                         padding: 10 // 内边距
+                         width: 150 // 宽度
+                         height: 30 // 高度
+                         //backgroundColor: "#ffff33" // 背景色
+                         //border.width: 0 // 边框宽度
+                         //radius: 20 // 圆角
+                         color: "#972b00" // 文本颜色
+                         focus: false // 失去焦点
+             }
+             // 第二个和第三个 input 的隐藏
+             TextInput {
+                         visible: false // 隐藏元素
+             }
+             TextInput {
+                         visible: false // 隐藏元素
+             }
+         }
+
+         //生成玩家牌
+         ListView {
+                 id: playerlistView
+                 width: parent.width
+                 height: parent.height
+                 clip: true
+                 delegate: Item {
+                     width: 80
+                     height: 120
+                     Column {
+                         anchors.centerIn: parent
+
+                         Text {
+                             text: modelData.pname + modelData.suit
+                             font.pixelSize: 18
+                             horizontalAlignment: Text.AlignHCenter
+                         }
+                     }
+                 }
+         }*/
+
+
 }
+

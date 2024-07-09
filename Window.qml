@@ -45,11 +45,14 @@ ApplicationWindow {
         id:actions
         start.onTriggered:Controller.start()
         about.onTriggered: content.dialogs.about.open()
+
+
     }
 
     Content{
         id:_content
     }
+
 
 
 
