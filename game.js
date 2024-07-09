@@ -1,3 +1,5 @@
+
+
 /*
 var players = [];
 var deck = [];
@@ -36,17 +38,51 @@ function distributeCards() {
 
 //游戏控制器：操作整个游戏的运行，接受信号并做出反应
 //开始
+
 var decks=[]
 var meDecks=[]
 var lplayerDecks=[]
 var rplayerDecks=[]
 var landlorsDecks=[]
-
+var players=[
+       { name: "玩家", isHuman: true},
+       { name: "人机1", isHuman: false },
+       { name: "人机2", isHuman: false }
+   ]
 
 
 function start(){
 
     console.log("---startGame----")
+    for (var i = 0; i < players.length; i++) {
+               var playerComponent = Qt.createComponent("Player.qml");
+               if (playerComponent.status === Component.Ready) {
+                   var playerObject = playerComponent.createObject( {
+                       "name": players[i].name,
+                       "isHuman": players[i].isHuman,
+                       "index": i,
+                       "playCard":arrayreturn(i)
+
+                   });
+
+                   if (playerObject === null) {
+                       console.log("Error creating player " + players[i].name);
+                   } else {
+                       console.log("Created player: " + players[i].name);
+                   }
+               } else {
+                   console.log("Error loading Player.qml component");
+               }
+           }
+
+    var currentPlayerIndex = 0; // 当前玩家索引，从第一个玩家开始
+    function getNextPlayer() {
+        var player = players[currentPlayerIndex];
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.length; // 循环到下一个玩家
+        return player;
+    }
+    var currentPlayer = getNextPlayer();
+    console.log("当前玩家:", currentPlayer.name);
 
     window.content.music.backgroundMusic.stop()
     window.content.music.backgroundMusic.play()
@@ -70,12 +106,8 @@ function start(){
     window.content.elements.notchuButtonImage.visible=false
     window.content.elements.chuButtonImage.visible=false
 
-    initializeDeck()
-    shuffleDeck()
 
-
-    dealCards()
-
+    init(decks,meDecks,lplayerDecks,rplayerDecks,landlorsDecks)
 
     console.log("--排序后--")
     console.log("\n-------我的牌:-------\n");
@@ -106,9 +138,20 @@ function start(){
 
 }
 
-var suits = ["♠️", "♥️", "🔷", "♣️"]
-// 初始化牌堆：生成一副包括 A-K 的四种花色和大小王的54张牌
-function initializeDeck() {
+function arrayreturn(a){
+
+    switch(a){
+    case 0:return meDecks;
+    case 1:return rplayerDecks;
+    case 2:return lplayerDecks;
+    default:console.log("invalid return");break;
+    }
+}
+function init(decks,meDecks,lplayerDecks,rplayerDecks,landlorsDecks)
+{
+    // 初始化牌堆：生成一副包括 A-K 的四种花色和大小王的54张牌
+
+    var suits = ["♠️", "♥️", "🔷", "♣️"]
     for (var s = 0; s < suits.length; ++s) {
         for (var r = 3; r <= 15; ++r) {
             var card={suit:suits[s],rank:r}
@@ -125,10 +168,8 @@ function initializeDeck() {
             for (var i = 0; i < decks.length; i++) {
                 console.log("索引",i,"花色:", decks[i].suit, " 牌面:", decks[i].rank);
             }*/
-}
 
-//洗牌：每次迭代生成一个随机整数j，该整数满足 [0,i)。这个随机整数j用来确定当前元素i要移动到的位置。
-function shuffleDeck() {
+    //洗牌：每次迭代生成一个随机整数j，该整数满足 [0,i)。这个随机整数j用来确定当前元素i要移动到的位置
     for (var i = decks.length - 1; i > 0; --i) {
         var j = Math.floor(Math.random() * (i + 1))
         var tmp=decks[j]
@@ -142,18 +183,14 @@ function shuffleDeck() {
             for (var e = 0; e < decks.length; e++) {
                 console.log("索引",e,"花色:", decks[e].suit, " 牌面:", decks[e].rank);
             }*/
-}
 
 
-//发牌：玩家拥有哪些牌，机器人拥有哪些
-//发牌特效（未实现）：动画与音乐
-//发牌规则：逆时针旋转，由玩家开始，依次发牌，每人17张，最后三张留作底牌，并扣上
-function dealCards() {
+    //发牌：玩家拥有哪些牌，机器人拥有哪些
     for(var k = decks.length - 3; k < decks.length; k++)
         landlorsDecks.push(decks[k]);
 
-    for(var i=0;i<decks.length-3;i++){
-        var j=i%3;
+    for(i=0;i<decks.length-3;i++){
+        j=i%3;
         switch(j){
         case 0:
             meDecks.push(decks[i]);break;
@@ -167,23 +204,8 @@ function dealCards() {
 
     }
 
-    /*
-    console.log("\n-------我的牌:-------\n");
-    for (var e = 0; e < meDecks.length; e++) {
-        console.log("索引",e,"花色:", meDecks[e].suit, " 牌面:", meDecks[e].rank);
-    }
-    console.log("\n-------右边玩家的牌:-------\n");
-    for (e = 0; e <  rplayerDecks.length; e++) {
-        console.log("索引",e,"花色:", rplayerDecks[e].suit, " 牌面:", rplayerDecks[e].rank);
-    }
-    console.log("\n-------左边玩家的牌-------\n");
-    for (e = 0; e <  lplayerDecks.length; e++) {
-        console.log("索引",e,"花色:",  lplayerDecks[e].suit, " 牌面:",  lplayerDecks[e].rank);
-    }
-    console.log("\n-------地主牌的信息:-------\n");
-    for (e = 0; e < landlorsDecks.length; e++) {
-        console.log("索引",e,"花色:", landlorsDecks[e].suit, " 牌面:", landlorsDecks[e].rank);
-    }*/
+
+
 }
 
 //排序：根据玩家牌面大小由大到小进行排序
@@ -235,6 +257,7 @@ function notcall(){
 
     window.content.elements.notchuButtonImage.visible=false
     window.content.elements.chuButtonImage.visible=false
+
 
 
 
@@ -292,7 +315,61 @@ function randomfarmer()
         n=3
     return "qrc:/images/people-"+n+".png"
 }
+function get(){
+    console.log("地主牌")
+    for(var i=0;i<landlorsDecks.length;i++)
+        return getCardImage(landlorsDecks[i].suit,landlorsDecks[i].rank)
+}
+function getCardImage(suit,rank) {
+    var suitName;
+    var rankName;
 
+    // 根据花色设置文件夹和文件名前缀
+    switch (suit) {
+        case 1:
+            suitName = "1"; // 黑桃
+            break;
+        case 2:
+            suitName = "2"; // 红桃
+            break;
+        case 3:
+            suitName = "3"; // 梅花
+            break;
+        case 4:
+            suitName = "4"; // 方块
+            break;
+        case 5:
+            suitName="5";//大小王
+            break;
+        default:
+            suitName = "";
+            break;
+    }
+
+    // 根据牌面大小设置文件名
+    if (rank >= 3 && rank <= 13) {
+                rankName = rank.toString();
+                console.log("1")
+            }else if(rank>=14&&rank<=15){
+                rankName=(rank-13).toString()
+                console.log("2")
+            }else if(rank === 16) { // 小王
+                    suitName="5";
+                    rankName = "1";
+                console.log("3")
+            }else if (rank === 17) { // 大王
+                    suitName="5";
+                    rankName = "2";
+                console.log("4")
+            }else{
+                    // 处理错误情况，如超出范围的牌面大小
+                    console.error("Invalid card rank: " + rank);
+                    return "";}
+
+    // 返回图片路径
+    return "qrc:/poker//" + suitName + "-" + rankName + ".png";
+
+}
 
 
 //机器人出牌

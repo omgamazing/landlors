@@ -14,6 +14,9 @@ Item {
     property alias meDecksLocation:_meDecksLocation
     property alias lDecksLocation:_lDecksLocation
     property alias rDecksLocation:_rDecksLocation
+    property alias meLocation:_meLocation
+    property alias lplayLocation:_lplayLocation
+    property alias rplayLocation:_rplayLocation
 
     property alias startButtonImage:_startButtonImage
     property alias notcallButtonImage:_notcallButtonImage
@@ -103,6 +106,23 @@ Item {
 
      }
 
+     //地主牌区域
+     RowLayout {
+             id: _landlorsDecksLocation
+             visible: false
+             x: 380
+             y: 30
+             spacing:8// 每张牌之间的间距
+
+             Repeater {
+                 model: 3
+                 delegate:Image {
+                     source:"qrc:/poker/1-2.png"
+
+             }
+         }
+     }
+
      //左边玩家的牌堆
      Rectangle{
          id:_lDecksLocation
@@ -166,6 +186,8 @@ Item {
 
      }
 
+
+     //自己的牌
      RowLayout {
              id: _meDecksLocation
              visible:false
@@ -203,21 +225,59 @@ Item {
      }
 
 
-
-     RowLayout {
-             id: _landlorsDecksLocation
+     //我出牌区域
+     RowLayout{
+             id: _meLocation
              visible: false
-             x: 380
-             y: 30
-             spacing:8// 每张牌之间的间距
+             x:420
+             y:350
+             spacing:-56// 每张牌之间的间距
 
              Repeater {
                  model: 3
                  delegate: Image {
-                     source: "qrc:/poker/1-4.png"
+                     source: "qrc:/poker/2-7.png"
                  }
              }
          }
+
+     //右边玩家出牌区域
+     ColumnLayout{
+             id: _rplayLocation
+             visible: false
+             anchors.right:_rDecksLocation.left
+             anchors.rightMargin: 60
+             anchors.top:_rDecksLocation.top
+             anchors.topMargin: -50
+             spacing:-77// 每张牌之间的间距
+
+             Repeater {
+                 model: 3
+                 delegate: Image {
+                     source: "qrc:/poker/2-13.png"
+                 }
+             }
+         }
+
+     //左边玩家出牌区域
+     ColumnLayout{
+             id: _lplayLocation
+             visible: false
+             anchors.left: _lDecksLocation.right
+             anchors.leftMargin: 60
+             anchors.top:_lDecksLocation.top
+             anchors.topMargin: -50
+             spacing:-77// 每张牌之间的间距
+
+             Repeater {
+                 model: 3
+                 delegate: Image {
+                     source: "qrc:/poker/2-12.png"
+                 }
+             }
+         }
+
+
 
      //开始按钮
      ColumnLayout {
@@ -385,7 +445,7 @@ Item {
          id:_notcallAni
          visible:false
          source: "qrc:/images/buqiang.png"
-         x:430
+         x:420
          y:320
      }
 
@@ -404,7 +464,7 @@ Item {
          id:_passAni
          visible:false
          source: "qrc:/images/pass.png"
-         x:430
+         x:420
          y:320
      }
      Timer{
@@ -481,122 +541,5 @@ Item {
              n=3
          return "qrc:/images/people-"+n+".png"
      }
-
-     /*
-         //卡牌从一个点移动到另一个点 移动效果的函数,用于发牌
-         Item {
-             property alias card: cardItem // 将内部的Card对象暴露给外部访问
-
-         RowLayout {
-             id: myDecks_location
-             visible: false
-             x: 270
-             y: 480
-             spacing: -56 // 每张牌之间的间距
-
-             Repeater {
-                 model: 17 // 假设有17张牌
-                 delegate: Item {
-                     width: 85
-                     height: 100
-
-                     Canvas {
-                         id: cardCanvas
-                         width: parent.width
-                         height: parent.height
-
-                         onPaint: {
-                             var ctx = getContext("2d");
-                             ctx.clearRect(0, 0, width, height);
-
-                             // 绘制牌的背景
-                             ctx.fillStyle = "white";
-                             ctx.fillRect(0, 0, width, height);
-                             ctx.strokeStyle = "black";
-                             ctx.strokeRect(0, 0, width, height);
-
-                             //player1传入
-                             //var deck = player1;
-
-
-                             // 绘制牌的花色和名称
-                             //var rank = "A"; // 替换为牌的名称，如 "A", "2", "3", ...
-                             //var suit = "♠"; // 替换为牌的花色符号，如 "♠", "♦", "♣", "♥"
-
-                             ctx.font = "bold 24px Arial";
-                             ctx.fillStyle = (suit === "♠" || suit === "♣") ? "black" : "red";
-                             ctx.textAlign = "left";
-                             ctx.textBaseline = "top";
-                             ctx.fillText(suit + rank, 5, 5);
-                         }
-                     }
-
-                     MouseArea {
-                         anchors.fill:parent
-                         onClicked: {
-                             parent.y=(parent.y===0?-15:0)
-                         }
-                     }
-                 }
-             }
-         }
-         function addCard(arr){
-
-             for (var i = 0; i < arr.length; i++) {
-                     var card = arr[i]; // 获取玩家1的第i张牌数据
-                     myDecks_location.itemAt(i).cardCanvas.rank = card.rank;
-                     myDecks_location.itemAt(i).cardCanvas.suit = card.suit;}
-         }
-
-     */
-
-
-
-         /*Rectangle{
-             id: btnBox
-             width: 200 // 设置宽度
-             height: 50 // 设置高度
-
-             TextInput {
-                         padding: 10 // 内边距
-                         width: 150 // 宽度
-                         height: 30 // 高度
-                         //backgroundColor: "#ffff33" // 背景色
-                         //border.width: 0 // 边框宽度
-                         //radius: 20 // 圆角
-                         color: "#972b00" // 文本颜色
-                         focus: false // 失去焦点
-             }
-             // 第二个和第三个 input 的隐藏
-             TextInput {
-                         visible: false // 隐藏元素
-             }
-             TextInput {
-                         visible: false // 隐藏元素
-             }
-         }
-
-         //生成玩家牌
-         ListView {
-                 id: playerlistView
-                 width: parent.width
-                 height: parent.height
-                 clip: true
-                 delegate: Item {
-                     width: 80
-                     height: 120
-                     Column {
-                         anchors.centerIn: parent
-
-                         Text {
-                             text: modelData.pname + modelData.suit
-                             font.pixelSize: 18
-                             horizontalAlignment: Text.AlignHCenter
-                         }
-                     }
-                 }
-         }*/
-
-
 
 }
