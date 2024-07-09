@@ -259,8 +259,6 @@ function notcall(){
     window.content.elements.chuButtonImage.visible=false
 
 
-
-
     //console.log("右边玩家叫地主后，右边玩家的牌")
     //addcards(lplayerDecks)
 
@@ -277,9 +275,6 @@ function call(){
     window.content.elements.notcallButtonImage.visible=false
     window.content.elements.centercard.visible=false
     window.content.elements.landlorsDecksLocation.visible=true
-
-
-
 
     window.content.elements.notchuButtonImage.visible=true
     window.content.elements.chuButtonImage.visible=true
